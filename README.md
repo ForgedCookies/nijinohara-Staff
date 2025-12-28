@@ -1,4 +1,6 @@
 # Driver timetable display system
+Use this system at https://forgedcookies.github.io/nijinohara-Staff/
+(Nijinohara BRT only)
 
 > [!CAUTION]
 > Unreliabilities, glitches and non-legally compliant practices are used in this project. Under no circumstances shall this web app be used in real life vehicular operations.
