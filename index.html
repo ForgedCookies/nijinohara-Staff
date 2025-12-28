@@ -500,166 +500,171 @@
         height: 50vh;
     }
 
+    /* Mobile layout: Fixed controls at bottom, timetable fills remaining space */
     .timetable-interface {
         flex-direction: column;
-        height: auto;
-        min-height: 100vh;
+        height: 100vh;
+        padding: 0;
+        gap: 0;
+        overflow: hidden;
     }
 
-    /* Make accessories sticky at the top */
-    .accessories-panel {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background: var(--bg-primary);
-        padding: 10px 0;
-        order: 1;
-    }
-
+    /* Timetable fills available space */
     .timetable-panel {
-        order: 2;
-        min-height: 60vh;
-        padding-top: 10px;
+        flex: 1;
+        order: 1;
+        padding: 10px;
+        overflow-x: auto;
+        overflow-y: auto;
+        border: none;
+        border-radius: 0;
     }
 
-    /* Compact clock cards for mobile */
-    .clock-card {
-        padding: 12px 16px;
+    /* Controls fixed at bottom with specific height */
+    .accessories-panel {
+        flex: 0 0 auto;
+        order: 2;
+        gap: 8px;
+        padding: 10px;
+        background: var(--bg-secondary);
+        border-top: 2px solid var(--border-color);
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        max-height: 50vh; /* Never takes more than half screen */
+    }
+
+    .start-driving-btn {
+        font-size: 16px;
+        padding: 12px;
+        margin-bottom: 0;
+    }
+
+    /* Two clocks side by side - MOBILE ONLY */
+    .clock-container {
+        display: flex;
+        gap: 8px;
+    }
+
+    .accessories-panel > .clock-card:first-child,
+    .accessories-panel > .clock-card:nth-child(2) {
+        flex: 1;
+        padding: 8px;
     }
 
     .clock-card h3 {
+        font-size: 9px;
+        margin-bottom: 2px;
+    }
+
+    .clock-time {
+        font-size: 18px;
+    }
+
+    .clock-large {
+        font-size: 20px;
+    }
+
+    /* Next stop card - compact */
+    .next-stop-card {
+        padding: 10px;
+        flex-shrink: 0;
+    }
+
+    .next-stop-card h3 {
         font-size: 11px;
         margin-bottom: 4px;
     }
 
-    .clock-time {
-        font-size: 24px;
-    }
-
-    .clock-large {
-        font-size: 28px;
-    }
-
-    /* Compact next stop card */
-    .next-stop-card {
-        padding: 16px;
-    }
-
-    .next-stop-card h3 {
-        font-size: 14px;
-        margin-bottom: 8px;
-    }
-
     .next-stop-info {
-        font-size: 20px;
-        margin-bottom: 10px;
+        font-size: 16px;
+        margin-bottom: 6px;
     }
 
     .next-stop-times {
-        gap: 8px;
-        margin-bottom: 10px;
+        gap: 6px;
+        margin-bottom: 6px;
+        font-size: 11px;
+    }
+
+    .time-label {
+        font-size: 9px;
     }
 
     .time-value {
-        font-size: 16px;
+        font-size: 13px;
     }
 
+    /* Arrange main action buttons in a 2-column grid */
     .control-buttons {
-        gap: 10px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    /* Arrived and Departed buttons - LARGEST */
+    .control-buttons .btn-arrived,
+    .control-buttons .btn-departed {
+        padding: 14px 10px;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    /* Previous button spans full width */
+    .control-buttons .btn-previous {
+        grid-column: 1 / -1;
+        padding: 12px 10px;
+        font-size: 14px;
     }
 
     .control-btn {
-        padding: 10px 16px;
-        font-size: 14px;
-    }
-
-    .start-driving-btn {
-        font-size: 18px;
-        padding: 16px;
-        margin-bottom: 16px;
-    }
-
-    /* Make table scrollable horizontally */
-    .timetable-panel table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .timetable-panel thead,
-    .timetable-panel tbody,
-    .timetable-panel tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-    }
-
-    /* Adjust column widths for mobile */
-    th, td {
         padding: 10px 8px;
-        font-size: 14px;
+        font-size: 13px;
     }
 
-    th:nth-child(1), td:nth-child(1) { width: 30%; } /* Station */
-    th:nth-child(2), td:nth-child(2) { width: 15%; } /* Arrival */
-    th:nth-child(3), td:nth-child(3) { width: 15%; } /* Departure */
-    th:nth-child(4), td:nth-child(4) { width: 12%; } /* Δ Arrival */
-    th:nth-child(5), td:nth-child(5) { width: 12%; } /* Δ Departure */
-    th:nth-child(6), td:nth-child(6) { width: 16%; } /* Remarks */
+    /* End shift and turnaround - FULL WIDTH each, stacked */
+    .btn-end-shift,
+    .btn-turnaround {
+        display: block;
+        width: 100%;
+        padding: 12px 10px;
+        font-size: 14px;
+        margin: 0;
+    }
 
-    /* Alternative: Card-based layout for extreme mobile */
-    @media (max-width: 480px) {
-        /* Make accessories even more compact */
-        .accessories-panel {
-            gap: 10px;
-        }
+    .btn-end-shift {
+        margin-bottom: 8px;
+    }
 
-        /* Hide table headers */
-        .timetable-panel thead {
-            display: none;
-        }
+    /* Keep table in table format - horizontal scroll within frame */
+    .timetable-panel table {
+        width: 100%;
+        display: table;
+        min-width: 600px;
+    }
 
-        /* Make each row a card */
-        .timetable-panel tbody,
-        .timetable-panel tr {
-            display: block;
-        }
+    /* Make table headers sticky within the scrollable frame */
+    .timetable-panel thead {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
 
-        .timetable-panel tr {
-            margin-bottom: 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-            background: var(--bg-secondary);
-        }
+    th {
+        background: var(--blue-primary);
+        position: sticky;
+        top: 0;
+    }
 
-        .timetable-panel tr.current-stop {
-            background: var(--bg-accent);
-            border: 2px solid var(--blue-primary);
-        }
+    /* Compact table cells */
+    th, td {
+        padding: 8px 6px;
+        font-size: 11px;
+    }
 
-        .timetable-panel td {
-            display: block;
-            text-align: left;
-            padding: 6px 0;
-            border: none;
-        }
-
-        /* Add labels before each data cell */
-        .timetable-panel td:nth-child(1)::before { content: "Station: "; font-weight: 600; }
-        .timetable-panel td:nth-child(2)::before { content: "Arrival: "; font-weight: 600; }
-        .timetable-panel td:nth-child(3)::before { content: "Departure: "; font-weight: 600; }
-        .timetable-panel td:nth-child(4)::before { content: "Δ Arrival: "; font-weight: 600; }
-        .timetable-panel td:nth-child(5)::before { content: "Δ Departure: "; font-weight: 600; }
-        .timetable-panel td:nth-child(6)::before { content: "Remarks: "; font-weight: 600; }
-
-        /* Make station name prominent */
-        .timetable-panel td:nth-child(1) {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--blue-primary);
-            margin-bottom: 8px;
-        }
+    .delta {
+        font-size: 10px;
     }
 }
     </style>
