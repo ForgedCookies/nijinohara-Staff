@@ -1,0 +1,31 @@
+{
+  "BRT1 あおなみセンター": [
+    { "station": "あおなみセンター", "runningTime": 0, "remarks": "Start" },
+    { "station": "Market Street", "runningTime": 180, "remarks": "" },
+    { "station": "City Park", "runningTime": 240, "remarks": "" },
+    { "station": "University", "runningTime": 300, "remarks": "" },
+    { "station": "Shopping Mall", "runningTime": 210, "remarks": "" },
+    { "station": "Airport Terminal", "runningTime": 420, "remarks": "End" }
+  ],
+  "BRT2-00 あけぼの": [
+    { "station": "吉浪本町", "runningTime": 0, "remarks": "" },
+    { "station": "本吉浪", "runningTime": 270, "remarks": "" },
+    { "station": "北吉浪", "runningTime": 195, "remarks": "" },
+    { "station": "灯", "runningTime": 330, "remarks": "" },
+    { "station": "春町公園", "runningTime": 330, "remarks": "２階" },
+    { "station": "あけぼの", "runningTime": 330, "remarks": "２階１＆２番到着予定" }
+  ],
+  "BRT2-00 吉浪": [
+    { "station": "North Station", "runningTime": 0, "remarks": "Start" },
+    { "station": "Industrial Park", "runningTime": 270, "remarks": "" },
+    { "station": "Residential Area", "runningTime": 195, "remarks": "" },
+    { "station": "South Station", "runningTime": 330, "remarks": "End" }
+  ],
+  "Route 303": [
+    { "station": "East Terminal", "runningTime": 0, "remarks": "Start" },
+    { "station": "Harbor View", "runningTime": 150, "remarks": "" },
+    { "station": "Beach Front", "runningTime": 180, "remarks": "" },
+    { "station": "Lighthouse", "runningTime": 240, "remarks": "" },
+    { "station": "West Terminal", "runningTime": 390, "remarks": "End" }
+  ]
+}
