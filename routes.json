@@ -5,6 +5,9 @@
     { "station": "City Park", "runningTime": 240, "remarks": "" },
     { "station": "University", "runningTime": 300, "remarks": "" },
     { "station": "Shopping Mall", "runningTime": 210, "remarks": "" },
+    { "station": "Airport Terminal", "runningTime": 420, "remarks": "End" },
+    { "station": "Airport Terminal", "runningTime": 420, "remarks": "End" },
+    { "station": "Airport Terminal", "runningTime": 420, "remarks": "End" },
     { "station": "Airport Terminal", "runningTime": 420, "remarks": "End" }
   ],
   "BRT2-00 あけぼの": [
