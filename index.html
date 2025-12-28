@@ -667,6 +667,60 @@
         font-size: 10px;
     }
 }
+    @media (max-width: 768px) {
+    /* ... keep all previous mobile styles ... */
+
+    /* Hide delta columns on mobile */
+    th:nth-child(4), 
+    td:nth-child(4),
+    th:nth-child(5), 
+    td:nth-child(5) {
+        display: none;
+    }
+
+    /* Adjust remaining column widths for better space usage */
+    th:nth-child(1), td:nth-child(1) { width: 35%; } /* Station */
+    th:nth-child(2), td:nth-child(2) { width: 22%; } /* Arrival */
+    th:nth-child(3), td:nth-child(3) { width: 22%; } /* Departure */
+    th:nth-child(6), td:nth-child(6) { width: 21%; } /* Remarks */
+
+    /* Keep table in table format - may not need horizontal scroll now */
+    .timetable-panel table {
+        width: 100%;
+        display: table;
+        min-width: 100%; /* Removed forced scroll since we have fewer columns */
+    }
+
+    /* Make table headers sticky within the scrollable frame */
+    .timetable-panel thead {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    th {
+        background: var(--blue-primary);
+        position: sticky;
+        top: 0;
+        padding: 10px 8px;
+        font-size: 13px; /* Bigger header text */
+    }
+
+    /* Bigger table text for better readability */
+    td {
+        padding: 12px 8px;
+        font-size: 14px; /* Increased from 11px */
+        line-height: 1.4;
+    }
+
+    /* Station names even bigger */
+    td:nth-child(1) {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    /* ... rest of mobile styles ... */
+}
     </style>
 </head>
 <body>
