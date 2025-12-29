@@ -1,5 +1,5 @@
 {
-  "BRT 1": {
+  "BRT1": {
     "stops": [
       {
         "station": "あおなみセンター",
@@ -72,79 +72,260 @@
         "remarks": ""
       }
     ],
-    "turnaroundTime": 15
+    "turnaroundTime": 0
   },
-  "BRT 2　吉浪行き": {
+  "BRT2　吉浪": {
     "stops": [
+      {
+        "station": "あけぼの",
+        "runningTime": 45,
+        "dwellTime": 30,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "春町公園",
+        "runningTime": 50,
+        "dwellTime": 15,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "灯",
+        "runningTime": 50,
+        "dwellTime": 10,
+        "isPass": false,
+        "remarks": "！速度制限注意！"
+      },
+      {
+        "station": "北吉浪",
+        "runningTime": 90,
+        "dwellTime": 10,
+        "isPass": false,
+        "remarks": "！速度制限注意！"
+      },
+      {
+        "station": "本吉浪",
+        "runningTime": 75,
+        "dwellTime": 15,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "吉浪本町",
+        "runningTime": 0,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": ""
+      }
+    ],
+    "turnaroundTime": 0
+  },
+  "BRT2 あけぼの": {
+    "stops": [
+      {
+        "station": "吉浪本町",
+        "runningTime": 75,
+        "dwellTime": 30,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "本吉浪",
+        "runningTime": 90,
+        "dwellTime": 10,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "北吉浪",
+        "runningTime": 50,
+        "dwellTime": 10,
+        "isPass": false,
+        "remarks": "！速度制限注意！"
+      },
+      {
+        "station": "灯",
+        "runningTime": 50,
+        "dwellTime": 10,
+        "isPass": false,
+        "remarks": "！速度制限注意！"
+      },
+      {
+        "station": "春町公園",
+        "runningTime": 40,
+        "dwellTime": 15,
+        "isPass": false,
+        "remarks": ""
+      },
       {
         "station": "あけぼの",
         "runningTime": 0,
         "dwellTime": 0,
         "isPass": false,
-        "remarks": "Start"
-      },
-      {
-        "station": "Industrial Park",
-        "runningTime": 270,
-        "dwellTime": 30,
-        "isPass": false,
         "remarks": ""
-      },
-      {
-        "station": "Residential Area",
-        "runningTime": 195,
-        "dwellTime": 30,
-        "isPass": false,
-        "remarks": ""
-      },
-      {
-        "station": "South Station",
-        "runningTime": 330,
-        "dwellTime": 0,
-        "isPass": false,
-        "remarks": "End"
       }
     ],
     "turnaroundTime": 0
   },
-  "Route 303": {
+  "BRT3　普通　みねさと町": {
     "stops": [
       {
-        "station": "East Terminal",
+        "station": "あけぼの",
+        "runningTime": 55,
+        "dwellTime": 30,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "八奈見",
+        "runningTime": 60,
+        "dwellTime": 15,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "津の坂",
+        "runningTime": 95,
+        "dwellTime": 20,
+        "isPass": false,
+        "remarks": "⇐DD｜通過バス待ち"
+      },
+      {
+        "station": "霧賀",
+        "runningTime": 170,
+        "dwellTime": 15,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "みねさと町",
         "runningTime": 0,
         "dwellTime": 0,
         "isPass": false,
-        "remarks": "Start"
-      },
-      {
-        "station": "Harbor View",
-        "runningTime": 150,
-        "dwellTime": 30,
-        "isPass": false,
         "remarks": ""
-      },
-      {
-        "station": "Beach Front",
-        "runningTime": 180,
-        "dwellTime": 45,
-        "isPass": false,
-        "remarks": ""
-      },
-      {
-        "station": "Lighthouse",
-        "runningTime": 240,
-        "dwellTime": 30,
-        "isPass": false,
-        "remarks": ""
-      },
-      {
-        "station": "West Terminal",
-        "runningTime": 390,
-        "dwellTime": 0,
-        "isPass": false,
-        "remarks": "End"
       }
     ],
-    "turnaroundTime": 15
+    "turnaroundTime": 0
+  },
+  "BRT3 普通　あけぼの": {
+    "stops": [
+      {
+        "station": "みねさと町",
+        "runningTime": 170,
+        "dwellTime": 30,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "霧賀",
+        "runningTime": 95,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "津の坂",
+        "runningTime": 60,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "八奈見",
+        "runningTime": 55,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "あけぼの",
+        "runningTime": 0,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": ""
+      }
+    ],
+    "turnaroundTime": 0
+  },
+  "BRT3 A急行　みねさと町": {
+    "stops": [
+      {
+        "station": "あけぼの",
+        "runningTime": 55,
+        "dwellTime": 30,
+        "isPass": false,
+        "remarks": "A急行｜通過駅乗客案内？"
+      },
+      {
+        "station": "八奈見",
+        "runningTime": 60,
+        "dwellTime": 0,
+        "isPass": true,
+        "remarks": ""
+      },
+      {
+        "station": "津の坂",
+        "runningTime": 95,
+        "dwellTime": 15,
+        "isPass": false,
+        "remarks": "B急待ち"
+      },
+      {
+        "station": "霧賀",
+        "runningTime": 170,
+        "dwellTime": 0,
+        "isPass": true,
+        "remarks": ""
+      },
+      {
+        "station": "みねさと町",
+        "runningTime": 0,
+        "dwellTime": 20,
+        "isPass": false,
+        "remarks": ""
+      }
+    ],
+    "turnaroundTime": 0
+  },
+  "BRT3 A急行　あけぼの": {
+    "stops": [
+      {
+        "station": "みねさと町",
+        "runningTime": 170,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": "A急行｜通過駅乗客案内？"
+      },
+      {
+        "station": "霧賀",
+        "runningTime": 95,
+        "dwellTime": 0,
+        "isPass": true,
+        "remarks": ""
+      },
+      {
+        "station": "津の坂",
+        "runningTime": 60,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "八奈見",
+        "runningTime": 55,
+        "dwellTime": 0,
+        "isPass": true,
+        "remarks": ""
+      },
+      {
+        "station": "あけぼの",
+        "runningTime": 0,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": ""
+      }
+    ],
+    "turnaroundTime": 0
   }
 }
