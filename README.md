@@ -12,15 +12,15 @@ This system is very rudimentary and basic as it-is, you are more than welcomed t
 ## Timetable authoring
 Authoring timetable is easy. All timetables are placed in routes.json file and 3 keys are defined for each item in the table.
 
-1. ```json "station": "example", ```
+1. ```"station": "example", ```
 Station name in strings. 
 
-2. ``` json"runningTime": ```
+2. ```"runningTime": ```
 Designated time for running from this station to the next one. 
 > [!TIP]
 > Collect driving time data across multiple shifts and calculate the median value.
 
-3. ```json "remarks": "" ```
+3. ```"remarks": "" ```
 Remarks to a station.
 
 Each object will translate to one row in the timetable itself.
