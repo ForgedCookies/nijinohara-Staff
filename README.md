@@ -16,7 +16,7 @@ Authoring timetable is easy. All timetables are placed in routes.json file and 3
 Station name in strings. 
 
 2. ```"runningTime": ```
-Designated time for running from this station to the next one. 
+Designated time, in seconds, allocated for running from this station to the next one. 
 > [!TIP]
 > Collect driving time data across multiple shifts and calculate the median value.
 
