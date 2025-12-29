@@ -18,7 +18,7 @@ Station name in strings.
 2. ``` json"runningTime": ```
 Designated time for running from this station to the next one. 
 > [!TIP]
-> Collect time data for multiple shifts within stations and calculate the median value.
+> Collect driving time data across multiple shifts and calculate the median value.
 
 3. ```json "remarks": "" ```
 Remarks to a station.
