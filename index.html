@@ -937,47 +937,61 @@
     }
 
     function renderTimetable() {
-        const tbody = document.getElementById('timetableBody');
-        tbody.innerHTML = '';
+    const tbody = document.getElementById('timetableBody');
+    tbody.innerHTML = '';
 
-        timetableData.forEach((stop, i) => {
-            const row = tbody.insertRow();
-            if (i === currentStopIndex) row.classList.add('current-stop');
-            if (i < currentStopIndex) row.classList.add('completed');
+    timetableData.forEach((stop, i) => {
+        const row = tbody.insertRow();
+        if (i === currentStopIndex) row.classList.add('current-stop');
+        if (i < currentStopIndex) row.classList.add('completed');
 
-            // Station name with "[PASS]" prefix if it's a passing station
-            const stationCell = row.insertCell(0);
-            if (stop.isPass) {
-                stationCell.innerHTML = `<span class="pass-label">[PASS]</span>${stop.station}`;
-            } else {
-                stationCell.textContent = stop.station;
-            }
-            
-            // Arrival time - hide for passing stations
-            const arrivalCell = row.insertCell(1);
-            arrivalCell.textContent = stop.isPass ? '---' : formatTime(stop.scheduledArrival);
-            
-            // Departure time
-            row.insertCell(2).textContent = stop.scheduledDeparture ? formatTime(stop.scheduledDeparture) : '---';
-            
-            const arrDelta = row.insertCell(3);
-            const depDelta = row.insertCell(4);
-            
-            // Delta for arrival - only show if not passing station
-            if (stop.actualArrival && !stop.isPass) {
-                const delta = Math.round((stop.actualArrival - stop.scheduledArrival) / 1000);
-                arrDelta.innerHTML = `<span class="delta ${delta < 0 ? 'early' : delta > 0 ? 'late' : 'ontime'}">${delta > 0 ? '+' : ''}${delta}s</span>`;
-            }
-            
-            // Delta for departure
-            if (stop.actualDeparture && stop.scheduledDeparture) {
-                const delta = Math.round((stop.actualDeparture - stop.scheduledDeparture) / 1000);
-                depDelta.innerHTML = `<span class="delta ${delta < 0 ? 'early' : delta > 0 ? 'late' : 'ontime'}">${delta > 0 ? '+' : ''}${delta}s</span>`;
-            }
-            
-            row.insertCell(5).textContent = stop.remarks;
-        });
-    }
+        // Station name with "[PASS]" prefix if it's a passing station
+        const stationCell = row.insertCell(0);
+        if (stop.isPass) {
+            stationCell.innerHTML = `<span class="pass-label">[PASS]</span>${stop.station}`;
+        } else {
+            stationCell.textContent = stop.station;
+        }
+        
+        // Arrival time - hide for passing stations AND first stop
+        const arrivalCell = row.insertCell(1);
+        if (i === 0) {
+            // First stop - no arrival time
+            arrivalCell.textContent = '---';
+        } else if (stop.isPass) {
+            // Passing station - no arrival time
+            arrivalCell.textContent = '---';
+        } else {
+            arrivalCell.textContent = formatTime(stop.scheduledArrival);
+        }
+        
+        // Departure time - hide for last stop
+        const departureCell = row.insertCell(2);
+        if (i === timetableData.length - 1) {
+            // Last stop - no departure time
+            departureCell.textContent = '---';
+        } else {
+            departureCell.textContent = stop.scheduledDeparture ? formatTime(stop.scheduledDeparture) : '---';
+        }
+        
+        const arrDelta = row.insertCell(3);
+        const depDelta = row.insertCell(4);
+        
+        // Delta for arrival - only show if not passing station AND not first stop
+        if (stop.actualArrival && !stop.isPass && i !== 0) {
+            const delta = Math.round((stop.actualArrival - stop.scheduledArrival) / 1000);
+            arrDelta.innerHTML = `<span class="delta ${delta < 0 ? 'early' : delta > 0 ? 'late' : 'ontime'}">${delta > 0 ? '+' : ''}${delta}s</span>`;
+        }
+        
+        // Delta for departure - only show if not last stop
+        if (stop.actualDeparture && stop.scheduledDeparture && i !== timetableData.length - 1) {
+            const delta = Math.round((stop.actualDeparture - stop.scheduledDeparture) / 1000);
+            depDelta.innerHTML = `<span class="delta ${delta < 0 ? 'early' : delta > 0 ? 'late' : 'ontime'}">${delta > 0 ? '+' : ''}${delta}s</span>`;
+        }
+        
+        row.insertCell(5).textContent = stop.remarks;
+    });
+}
 
     function updateNextStop() {
     if (currentStopIndex >= timetableData.length) {
