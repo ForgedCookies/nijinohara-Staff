@@ -1,14 +1,15 @@
 {
   "BRT1 あおなみセンター": [
-    { "station": "あおなみセンター", "runningTime": 0, "remarks": "Start" },
-    { "station": "Market Street", "runningTime": 180, "remarks": "" },
-    { "station": "City Park", "runningTime": 240, "remarks": "" },
-    { "station": "University", "runningTime": 300, "remarks": "" },
-    { "station": "Shopping Mall", "runningTime": 210, "remarks": "" },
-    { "station": "Airport Terminal", "runningTime": 420, "remarks": "End" },
-    { "station": "Airport Terminal", "runningTime": 420, "remarks": "End" },
-    { "station": "Airport Terminal", "runningTime": 420, "remarks": "End" },
-    { "station": "Airport Terminal", "runningTime": 420, "remarks": "End" }
+    { "station": "あおなみ", "runningTime": 60, "remarks": "" },
+    { "station": "中央", "runningTime": 60, "remarks": "" },
+    { "station": "鶴巻団地", "runningTime": 65, "remarks": "" },
+    { "station": "浪平入口", "runningTime": 50, "remarks": "" },
+    { "station": "月見原", "runningTime": 40, "remarks": "" },
+    { "station": "運動公園前", "runningTime": 40, "remarks": "" },
+    { "station": "春町公園", "runningTime": 45, "remarks": "1F" },
+    { "station": "あけぼの", "runningTime": 70, "remarks": "P5 & P6" },
+    { "station": "中央", "runningTime": 60, "remarks": "" }
+    { "station": "あおなみ", "runningTime": 0, "remarks": "折り返し➡客降り不要" }
   ],
   "BRT2-00 あけぼの": [
     { "station": "吉浪本町", "runningTime": 0, "remarks": "" },
@@ -31,4 +32,5 @@
     { "station": "Lighthouse", "runningTime": 240, "remarks": "" },
     { "station": "West Terminal", "runningTime": 390, "remarks": "End" }
   ]
+
 }
