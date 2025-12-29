@@ -1,32 +1,149 @@
 {
   "Route 101": {
     "stops": [
-      { "station": "Central Station", "runningTime": 0, "dwellTime": 0, "isPass": false, "remarks": "Start" },
-      { "station": "Market Street", "runningTime": 180, "dwellTime": 30, "isPass": false, "remarks": "" },
-      { "station": "City Park", "runningTime": 240, "dwellTime": 45, "isPass": false, "remarks": "" },
-      { "station": "University", "runningTime": 300, "dwellTime": 30, "isPass": false, "remarks": "" },
-      { "station": "Express Junction", "runningTime": 120, "dwellTime": 0, "isPass": true, "remarks": "Express only" },
-      { "station": "Shopping Mall", "runningTime": 210, "dwellTime": 60, "isPass": false, "remarks": "High traffic" },
-      { "station": "Airport Terminal", "runningTime": 420, "dwellTime": 0, "isPass": false, "remarks": "End" }
+      {
+        "station": "あおなみセンター",
+        "runningTime": 60,
+        "dwellTime": 20,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "虹の原中央",
+        "runningTime": 60,
+        "dwellTime": 15,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "鶴巻団地",
+        "runningTime": 50,
+        "dwellTime": 30,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "浪平入口",
+        "runningTime": 50,
+        "dwellTime": 10,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "月見原",
+        "runningTime": 40,
+        "dwellTime": 15,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "運動公園前",
+        "runningTime": 45,
+        "dwellTime": 15,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "春町公園",
+        "runningTime": 45,
+        "dwellTime": 15,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "あけぼの",
+        "runningTime": 70,
+        "dwellTime": 20,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "虹の原中央",
+        "runningTime": 60,
+        "dwellTime": 15,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "あおなみセンター",
+        "runningTime": 0,
+        "dwellTime": 20,
+        "isPass": false,
+        "remarks": ""
+      }
     ],
-    "turnaroundTime": 15
+    "turnaroundTime": 0
   },
   "Route 202": {
     "stops": [
-      { "station": "North Station", "runningTime": 0, "dwellTime": 0, "isPass": false, "remarks": "Start" },
-      { "station": "Industrial Park", "runningTime": 270, "dwellTime": 30, "isPass": false, "remarks": "" },
-      { "station": "Residential Area", "runningTime": 195, "dwellTime": 30, "isPass": false, "remarks": "" },
-      { "station": "South Station", "runningTime": 330, "dwellTime": 0, "isPass": false, "remarks": "End" }
+      {
+        "station": "North Station",
+        "runningTime": 0,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": "Start"
+      },
+      {
+        "station": "Industrial Park",
+        "runningTime": 270,
+        "dwellTime": 30,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "Residential Area",
+        "runningTime": 195,
+        "dwellTime": 30,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "South Station",
+        "runningTime": 330,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": "End"
+      }
     ],
-    "turnaroundTime": 15
+    "turnaroundTime": 0
   },
   "Route 303": {
     "stops": [
-      { "station": "East Terminal", "runningTime": 0, "dwellTime": 0, "isPass": false, "remarks": "Start" },
-      { "station": "Harbor View", "runningTime": 150, "dwellTime": 30, "isPass": false, "remarks": "" },
-      { "station": "Beach Front", "runningTime": 180, "dwellTime": 45, "isPass": false, "remarks": "" },
-      { "station": "Lighthouse", "runningTime": 240, "dwellTime": 30, "isPass": false, "remarks": "" },
-      { "station": "West Terminal", "runningTime": 390, "dwellTime": 0, "isPass": false, "remarks": "End" }
+      {
+        "station": "East Terminal",
+        "runningTime": 0,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": "Start"
+      },
+      {
+        "station": "Harbor View",
+        "runningTime": 150,
+        "dwellTime": 30,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "Beach Front",
+        "runningTime": 180,
+        "dwellTime": 45,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "Lighthouse",
+        "runningTime": 240,
+        "dwellTime": 30,
+        "isPass": false,
+        "remarks": ""
+      },
+      {
+        "station": "West Terminal",
+        "runningTime": 390,
+        "dwellTime": 0,
+        "isPass": false,
+        "remarks": "End"
+      }
     ],
     "turnaroundTime": 15
   }
