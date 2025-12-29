@@ -1,5 +1,5 @@
 {
-  "Route 101": {
+  "BRT 1": {
     "stops": [
       {
         "station": "あおなみセンター",
@@ -72,12 +72,12 @@
         "remarks": ""
       }
     ],
-    "turnaroundTime": 0
+    "turnaroundTime": 15
   },
-  "Route 202": {
+  "BRT 2　吉浪行き": {
     "stops": [
       {
-        "station": "North Station",
+        "station": "あけぼの",
         "runningTime": 0,
         "dwellTime": 0,
         "isPass": false,
