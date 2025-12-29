@@ -72,7 +72,7 @@
         "remarks": ""
       }
     ],
-    "turnaroundTime": 0
+    "turnaroundTime": 15
   },
   "BRT2　吉浪": {
     "stops": [
@@ -119,7 +119,7 @@
         "remarks": ""
       }
     ],
-    "turnaroundTime": 0
+    "turnaroundTime": 15
   },
   "BRT2 あけぼの": {
     "stops": [
@@ -166,7 +166,7 @@
         "remarks": ""
       }
     ],
-    "turnaroundTime": 0
+    "turnaroundTime": 15
   },
   "BRT3　普通　みねさと町": {
     "stops": [
@@ -206,7 +206,7 @@
         "remarks": ""
       }
     ],
-    "turnaroundTime": 0
+    "turnaroundTime": 15
   },
   "BRT3 普通　あけぼの": {
     "stops": [
@@ -246,7 +246,7 @@
         "remarks": ""
       }
     ],
-    "turnaroundTime": 0
+    "turnaroundTime": 15
   },
   "BRT3 A急行　みねさと町": {
     "stops": [
@@ -286,7 +286,7 @@
         "remarks": ""
       }
     ],
-    "turnaroundTime": 0
+    "turnaroundTime": 15
   },
   "BRT3 A急行　あけぼの": {
     "stops": [
@@ -326,6 +326,6 @@
         "remarks": ""
       }
     ],
-    "turnaroundTime": 0
+    "turnaroundTime": 15
   }
 }
