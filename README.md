@@ -11,7 +11,9 @@ This system is very rudimentary and basic as it-is, you are more than welcomed t
 
 ## Timetable authoring
 Authoring timetable is easy. All timetables are placed in routes.json file and 3 keys are defined for each item in the table.
+If you get dizzy reading code you can load a JSON file into this site and edit: https://forgedcookies.github.io/JSONNest-Edit/
 
+### Keys in each object
 1. ```"station": "example", ```
 Station name in strings. 
 
@@ -22,6 +24,14 @@ Designated time, in seconds, allocated for running from this station to the next
 
 3. ```"remarks": "" ```
 Remarks to a station.
+
+4. ```"dwellTime"```
+How long, in seconds, the service is scheduled to stop at a station
+
+5. ```"isPass":```
+Do we skip or pass this station?
+True = pass
+False = stop
 
 Each object will translate to one row in the timetable itself.
 
