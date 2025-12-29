@@ -930,9 +930,21 @@
 
     function roundTo15Seconds(date) {
         const seconds = date.getSeconds();
-        const rounded = Math.round(seconds / 15) * 15;
+        const milliseconds = date.getMilliseconds();
+        
+        // Calculate how many seconds until next 15-second mark
+        const remainder = seconds % 15;
+        
+        // If already on a 15-second mark and no milliseconds, keep as is
+        if (remainder === 0 && milliseconds === 0) {
+            return new Date(date);
+        }
+        
+        // Otherwise, round UP to next 15-second mark
+        const secondsToAdd = 15 - remainder;
         const newDate = new Date(date);
-        newDate.setSeconds(rounded, 0);
+        newDate.setSeconds(seconds + secondsToAdd, 0);
+        
         return newDate;
     }
 
@@ -1215,4 +1227,5 @@
 </div>
 
 </body>
+
 </html>
