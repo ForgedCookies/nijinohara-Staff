@@ -1,36 +1,33 @@
 {
-  "BRT1 あおなみセンター": [
-    { "station": "あおなみ", "runningTime": 60, "remarks": "" },
-    { "station": "中央", "runningTime": 60, "remarks": "" },
-    { "station": "鶴巻団地", "runningTime": 65, "remarks": "" },
-    { "station": "浪平入口", "runningTime": 50, "remarks": "" },
-    { "station": "月見原", "runningTime": 40, "remarks": "" },
-    { "station": "運動公園前", "runningTime": 40, "remarks": "" },
-    { "station": "春町公園", "runningTime": 45, "remarks": "1F" },
-    { "station": "あけぼの", "runningTime": 70, "remarks": "P5 & P6" },
-    { "station": "中央", "runningTime": 60, "remarks": "" }
-    { "station": "あおなみ", "runningTime": 0, "remarks": "折り返し➡客降り不要" }
-  ],
-  "BRT2-00 あけぼの": [
-    { "station": "吉浪本町", "runningTime": 0, "remarks": "" },
-    { "station": "本吉浪", "runningTime": 270, "remarks": "" },
-    { "station": "北吉浪", "runningTime": 195, "remarks": "" },
-    { "station": "灯", "runningTime": 330, "remarks": "" },
-    { "station": "春町公園", "runningTime": 330, "remarks": "２階" },
-    { "station": "あけぼの", "runningTime": 330, "remarks": "２階１＆２番到着予定" }
-  ],
-  "BRT2-00 吉浪": [
-    { "station": "North Station", "runningTime": 0, "remarks": "Start" },
-    { "station": "Industrial Park", "runningTime": 270, "remarks": "" },
-    { "station": "Residential Area", "runningTime": 195, "remarks": "" },
-    { "station": "South Station", "runningTime": 330, "remarks": "End" }
-  ],
-  "Route 303": [
-    { "station": "East Terminal", "runningTime": 0, "remarks": "Start" },
-    { "station": "Harbor View", "runningTime": 150, "remarks": "" },
-    { "station": "Beach Front", "runningTime": 180, "remarks": "" },
-    { "station": "Lighthouse", "runningTime": 240, "remarks": "" },
-    { "station": "West Terminal", "runningTime": 390, "remarks": "End" }
-  ]
-
+  "Route 101": {
+    "stops": [
+      { "station": "Central Station", "runningTime": 0, "dwellTime": 0, "isPass": false, "remarks": "Start" },
+      { "station": "Market Street", "runningTime": 180, "dwellTime": 30, "isPass": false, "remarks": "" },
+      { "station": "City Park", "runningTime": 240, "dwellTime": 45, "isPass": false, "remarks": "" },
+      { "station": "University", "runningTime": 300, "dwellTime": 30, "isPass": false, "remarks": "" },
+      { "station": "Express Junction", "runningTime": 120, "dwellTime": 0, "isPass": true, "remarks": "Express only" },
+      { "station": "Shopping Mall", "runningTime": 210, "dwellTime": 60, "isPass": false, "remarks": "High traffic" },
+      { "station": "Airport Terminal", "runningTime": 420, "dwellTime": 0, "isPass": false, "remarks": "End" }
+    ],
+    "turnaroundTime": 15
+  },
+  "Route 202": {
+    "stops": [
+      { "station": "North Station", "runningTime": 0, "dwellTime": 0, "isPass": false, "remarks": "Start" },
+      { "station": "Industrial Park", "runningTime": 270, "dwellTime": 30, "isPass": false, "remarks": "" },
+      { "station": "Residential Area", "runningTime": 195, "dwellTime": 30, "isPass": false, "remarks": "" },
+      { "station": "South Station", "runningTime": 330, "dwellTime": 0, "isPass": false, "remarks": "End" }
+    ],
+    "turnaroundTime": 15
+  },
+  "Route 303": {
+    "stops": [
+      { "station": "East Terminal", "runningTime": 0, "dwellTime": 0, "isPass": false, "remarks": "Start" },
+      { "station": "Harbor View", "runningTime": 150, "dwellTime": 30, "isPass": false, "remarks": "" },
+      { "station": "Beach Front", "runningTime": 180, "dwellTime": 45, "isPass": false, "remarks": "" },
+      { "station": "Lighthouse", "runningTime": 240, "dwellTime": 30, "isPass": false, "remarks": "" },
+      { "station": "West Terminal", "runningTime": 390, "dwellTime": 0, "isPass": false, "remarks": "End" }
+    ],
+    "turnaroundTime": 15
+  }
 }
