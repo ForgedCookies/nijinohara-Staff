@@ -10,7 +10,7 @@ Originally designed for Nijinohara BRT, a bus driving game on roblox, this web a
 This system is very rudimentary and basic as it-is, you are more than welcomed to derive this system for your own use.
 
 
-## How do use (as consumer)?
+## How to use (as a normal user)?
 1. Select a route you are driving today.
 2. Once in the driving interface, press "Start Driving"
 3. Press Already arrived for starting station, if applicable
