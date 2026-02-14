@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Driver's Timetable System</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,68 +13,90 @@
         }
 
         :root {
-            --bg-primary: #f0f4f8;
-            --bg-secondary: #ffffff;
-            --bg-accent: #e3f2fd;
-            --text-primary: #1a1a1a;
-            --text-secondary: #666666;
-            --border-color: #d1d9e0;
-            --blue-primary: #1976d2;
-            --blue-hover: #1565c0;
-            --success: #4caf50;
-            --warning: #ff9800;
+            --coral: #FF6B6B;
+            --ocean: #4ECDC4;
+            --sunshine: #FFE66D;
+            --violet: #A8DADC;
+            --midnight: #1A1A2E;
+            --cloud: #F7F7F7;
+            --slate: #2D3142;
+            --success: #06D6A0;
+            --alert: #FF8C42;
+            --danger: #EF476F;
+            
+            --bg-primary: #F7F7F7;
+            --bg-card: #FFFFFF;
+            --text-primary: #1A1A2E;
+            --text-secondary: #6B6B7B;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
         }
 
         [data-theme="dark"] {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-accent: #1c2938;
-            --text-primary: #e6edf3;
-            --text-secondary: #8b949e;
-            --border-color: #30363d;
-            --blue-primary: #1e88e5;
-            --blue-hover: #1976d2;
+            --bg-primary: #1A1A2E;
+            --bg-card: #2D3142;
+            --text-primary: #F7F7F7;
+            --text-secondary: #A8DADC;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
         }
 
         /* Route Selection Interface */
         .route-selection {
             display: flex;
             height: 100vh;
-            gap: 20px;
-            padding: 20px;
+            gap: 24px;
+            padding: 24px;
+            background: var(--bg-primary);
         }
 
         .route-list-panel {
-            flex: 0 0 350px;
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 20px;
+            flex: 0 0 380px;
+            background: var(--bg-card);
+            border-radius: 0;
+            padding: 28px;
             display: flex;
             flex-direction: column;
-            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--text-secondary);
         }
 
         .route-list-panel h2 {
-            margin-bottom: 15px;
-            color: var(--blue-primary);
+            margin-bottom: 24px;
+            color: var(--text-primary);
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .search-bar {
             width: 100%;
-            padding: 12px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
+            padding: 16px 20px;
+            border: 2px solid var(--text-secondary);
+            border-radius: 0;
             background: var(--bg-primary);
             color: var(--text-primary);
-            font-size: 14px;
-            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--text-primary);
+            box-shadow: none;
         }
 
         .route-buttons {
@@ -81,84 +104,116 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 2px;
+            padding-right: 8px;
+        }
+
+        .route-buttons::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .route-buttons::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+            border-radius: 0;
+        }
+
+        .route-buttons::-webkit-scrollbar-thumb {
+            background: var(--text-secondary);
+            border-radius: 0;
         }
 
         .route-btn {
-            padding: 15px;
-            background: var(--bg-accent);
-            border: 2px solid var(--blue-primary);
-            border-radius: 8px;
+            padding: 18px 20px;
+            background: var(--bg-primary);
+            border: 2px solid var(--text-secondary);
+            border-radius: 0;
             cursor: pointer;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-primary);
-            transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.15s ease;
+            position: relative;
+            text-align: left;
         }
 
         .route-btn:hover {
-            background: var(--blue-primary);
-            color: white;
-            transform: translateX(5px);
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
         }
 
         .route-btn.selected {
-            background: var(--blue-primary);
-            color: white;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
         }
 
         .map-panel {
             flex: 1;
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 0;
+            padding: 32px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--text-secondary);
         }
 
         .map-placeholder {
             width: 100%;
             height: 100%;
-            background: var(--bg-accent);
-            border-radius: 8px;
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--violet) 100%);
+            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-secondary);
-            font-size: 18px;
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
         }
 
         .confirm-btn {
-            margin-top: 20px;
-            padding: 15px 40px;
-            background: var(--blue-primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 600;
+            margin-top: 28px;
+            padding: 18px 48px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border: 2px solid var(--text-primary);
+            border-radius: 0;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
         .confirm-btn:hover {
-            background: var(--blue-hover);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .confirm-btn:active {
+            transform: none;
         }
 
         .confirm-btn:disabled {
-            background: var(--text-secondary);
+            background: transparent;
+            color: var(--text-secondary);
+            border-color: var(--text-secondary);
             cursor: not-allowed;
+            opacity: 0.5;
         }
 
         /* Timetable Interface */
         .timetable-interface {
             display: none;
             height: 100vh;
-            padding: 20px;
-            gap: 20px;
+            padding: 24px;
+            gap: 24px;
         }
 
         .timetable-interface.active {
@@ -167,259 +222,377 @@
 
         .timetable-panel {
             flex: 1;
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 0;
+            padding: 28px;
             overflow-y: auto;
-            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--text-secondary);
+        }
+
+        .timetable-panel::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .timetable-panel::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+            border-radius: 0;
+        }
+
+        .timetable-panel::-webkit-scrollbar-thumb {
+            background: var(--text-secondary);
+            border-radius: 0;
         }
 
         .accessories-panel {
-            flex: 0 0 320px;
+            flex: 0 0 360px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 2px;
         }
 
         .clock-card, .next-stop-card {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            border-radius: 0;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            border: 2px solid var(--text-secondary);
+            transition: all 0.3s ease;
         }
 
         .clock-card h3 {
-            font-size: 14px;
+            font-size: 12px;
             color: var(--text-secondary);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-weight: 700;
         }
 
         .clock-time {
-            font-size: 36px;
+            font-size: 40px;
             font-weight: 700;
             font-variant-numeric: tabular-nums;
-            color: var(--blue-primary);
+            color: var(--ocean);
+            font-family: 'Space Mono', monospace;
         }
 
         .clock-large {
-            font-size: 48px;
+            font-size: 52px;
         }
 
         .next-stop-card h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--blue-primary);
+            font-size: 14px;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
         }
 
         .next-stop-info {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             color: var(--text-primary);
+            letter-spacing: -0.5px;
         }
 
         .next-stop-times {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-            font-size: 14px;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .time-block {
+            background: var(--bg-primary);
+            padding: 16px;
+            border-radius: 0;
+            border: 2px solid var(--text-secondary);
         }
 
         .time-label {
             color: var(--text-secondary);
-            font-size: 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 6px;
         }
 
         .time-value {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 20px;
+            font-weight: 700;
             font-variant-numeric: tabular-nums;
+            color: var(--text-primary);
+            font-family: 'Space Mono', monospace;
         }
 
         .control-buttons {
             display: flex;
             flex-direction: column;
-            gap: 16px; /* consistent spacing for all buttons */
+            gap: 2px;
         }
-
 
         .control-btn {
             position: relative;
-            overflow: hidden;
-            transition: transform 0.1s, box-shadow 0.1s;
-            /* Add these missing properties: */
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 16px 20px;
+            border: 2px solid var(--text-primary);
+            border-radius: 0;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.15s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .control-btn:hover {
+            background: var(--text-primary);
+            color: var(--bg-primary);
         }
 
         .control-btn:active {
-            transform: scale(0.97);
-            box-shadow: inset 0 4px 8px rgba(0,0,0,0.3);
+            transform: none;
         }
 
-
-
         .control-btn:disabled {
-            background: var(--border-color);
-            color: var(--text-secondary);
+            opacity: 0.3;
             cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-            opacity: 0.6;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .control-btn:disabled:hover {
+            background: var(--bg-primary);
+            color: var(--text-primary);
         }
 
         .btn-arrived {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .btn-arrived:hover:not(:disabled) {
             background: var(--success);
             color: white;
         }
 
         .btn-departed {
-            background: var(--blue-primary);
+            border-color: var(--ocean);
+            color: var(--ocean);
+        }
+
+        .btn-departed:hover:not(:disabled) {
+            background: var(--ocean);
             color: white;
         }
 
         .btn-previous {
-            background: var(--warning);
+            border-color: var(--alert);
+            color: var(--alert);
+        }
+
+        .btn-previous:hover:not(:disabled) {
+            background: var(--alert);
             color: white;
         }
 
         .btn-end-shift {
-            background: #9c27b0;
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .btn-end-shift:hover {
+            background: var(--danger);
             color: white;
         }
 
         .btn-turnaround {
-            background: #607d8b;
-            color: white;
+            border-color: var(--text-secondary);
+            color: var(--text-secondary);
         }
 
-        .control-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        .btn-turnaround:hover:not(:disabled) {
+            background: var(--text-secondary);
+            color: var(--bg-primary);
         }
 
         .start-driving-btn {
             width: 100%;
             padding: 20px;
-            background: var(--success);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 20px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border: 2px solid var(--text-primary);
+            border-radius: 0;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
         .start-driving-btn:hover {
-            background: #45a049;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .start-driving-btn:active {
+            transform: none;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0 8px;
         }
 
-        th {
-            background: var(--blue-primary);
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
+        thead {
             position: sticky;
             top: 0;
             z-index: 10;
         }
 
+        th {
+            background: var(--midnight);
+            color: white;
+            padding: 18px 16px;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+        }
+
+        th:first-child {
+            border-radius: 0;
+        }
+
+        th:last-child {
+            border-radius: 0;
+        }
+
+        tbody tr {
+            background: var(--bg-primary);
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            transform: none;
+            box-shadow: none;
+            background: var(--bg-card);
+        }
+
         td {
-            padding: 15px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 18px 16px;
+            border-top: 2px solid var(--bg-card);
+            border-bottom: 2px solid var(--bg-card);
+            font-size: 15px;
+        }
+
+        td:first-child {
+            border-left: 2px solid var(--bg-card);
+            border-radius: 0;
+            font-weight: 600;
+        }
+
+        td:last-child {
+            border-right: 2px solid var(--bg-card);
+            border-radius: 0;
         }
 
         tr.current-stop {
-            background: var(--bg-accent);
+            background: var(--sunshine);
+        }
+
+        tr.current-stop td {
+            border-color: var(--coral);
+            font-weight: 600;
         }
 
         tr.completed {
-            opacity: 0.5;
+            opacity: 0.4;
         }
 
         .delta {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
+            padding: 4px 10px;
+            border-radius: 0;
+            display: inline-block;
+            font-family: 'Space Mono', monospace;
+            border: 1px solid;
         }
 
         .delta.early {
+            background: transparent;
             color: var(--success);
+            border-color: var(--success);
         }
 
         .delta.late {
-            color: #f44336;
+            background: transparent;
+            color: var(--danger);
+            border-color: var(--danger);
         }
 
         .delta.ontime {
+            background: transparent;
             color: var(--text-secondary);
+            border-color: var(--text-secondary);
         }
 
         span.pass-label {
-            font-weight: 700 !important;
-            color: #f44336 !important;
-            background: rgba(244, 67, 54, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-right: 8px;
+            font-weight: 700;
+            color: white;
+            background: var(--text-primary);
+            padding: 4px 10px;
+            border-radius: 0;
+            margin-right: 10px;
             display: inline-block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .theme-toggle {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--blue-primary);
-            color: white;
-            border: none;
+            top: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            border-radius: 0;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border: 2px solid var(--text-primary);
             cursor: pointer;
             font-size: 24px;
             z-index: 1000;
+            box-shadow: var(--shadow-md);
+            transition: all 0.2s ease;
         }
 
-        @media (max-width: 768px) {
-            .route-selection {
-                flex-direction: column;
-            }
-
-            .route-list-panel {
-                flex: 0 0 auto;
-                height: 50vh;
-            }
-
-            .timetable-interface {
-                flex-direction: column;
-            }
-
-            .accessories-panel {
-                flex: 0 0 auto;
-            }
+        .theme-toggle:hover {
+            background: var(--bg-primary);
+            color: var(--text-primary);
         }
 
         .modal {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(26, 26, 46, 0.8);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 2000;
+            backdrop-filter: blur(4px);
         }
 
         .modal.active {
@@ -427,318 +600,257 @@
         }
 
         .modal-content {
-            background: var(--bg-secondary);
+            background: var(--bg-card);
             color: var(--text-primary);
-            padding: 24px;
-            border-radius: 12px;
+            padding: 32px;
+            border-radius: 0;
             width: 90%;
-            max-width: 500px;
+            max-width: 550px;
             max-height: 70vh;
             overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            border: 2px solid var(--text-primary);
         }
 
         .modal-content h2 {
-            margin-bottom: 12px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-size: 28px;
         }
 
         .modal-content pre {
-            background: var(--bg-accent);
-            padding: 12px;
-            border-radius: 8px;
+            background: var(--bg-primary);
+            padding: 20px;
+            border-radius: 0;
             font-size: 14px;
+            line-height: 1.8;
+            border: 2px solid var(--text-secondary);
         }
 
         dialog#shiftReportDialog {
-            border: none;
-            border-radius: 12px;
-            padding: 24px;
-            max-width: 500px;
+            border: 2px solid var(--text-primary);
+            border-radius: 0;
+            padding: 32px;
+            max-width: 550px;
             width: 90%;
-            background: var(--bg-secondary);
+            background: var(--bg-card);
             color: var(--text-primary);
-            /* Add these centering properties: */
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             margin: 0;
+            box-shadow: var(--shadow-lg);
         }
 
         dialog::backdrop {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(4px);
         }
 
         dialog#shiftReportDialog h2 {
-            margin-bottom: 16px;
-            color: var(--blue-primary);
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-size: 28px;
+            font-weight: 700;
         }
 
         dialog#shiftReportDialog pre {
-            background: var(--bg-accent);
-            padding: 12px;
-            border-radius: 8px;
-            max-height: 300px;
+            background: var(--bg-primary);
+            padding: 20px;
+            border-radius: 0;
+            max-height: 320px;
             overflow-y: auto;
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.8;
             white-space: pre-wrap;
+            border: 2px solid var(--text-secondary);
+            font-family: 'Space Mono', monospace;
         }
 
         dialog#shiftReportDialog menu {
             display: flex;
             justify-content: flex-end;
             gap: 12px;
-            margin-top: 16px;
+            margin-top: 20px;
             padding: 0;
         }
 
-        dialog#shiftReportDialog .control-btn {
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-        }
-
+        /* Mobile Responsive */
         @media (max-width: 768px) {
-    .route-selection {
-        flex-direction: column;
-    }
+            .route-selection {
+                flex-direction: column;
+                padding: 16px;
+                gap: 16px;
+            }
 
-    .route-list-panel {
-        flex: 0 0 auto;
-        height: 50vh;
-    }
+            .route-list-panel {
+                flex: 0 0 auto;
+                height: 50vh;
+                padding: 20px;
+            }
 
-    /* Mobile layout: Fixed controls at bottom, timetable fills remaining space */
-    .timetable-interface {
-        flex-direction: column;
-        height: 100vh;
-        padding: 0;
-        gap: 0;
-        overflow: hidden;
-    }
+            .route-list-panel h2 {
+                font-size: 24px;
+            }
 
-    /* Timetable fills available space */
-    .timetable-panel {
-        flex: 1;
-        order: 1;
-        padding: 10px;
-        overflow-x: auto;
-        overflow-y: auto;
-        border: none;
-        border-radius: 0;
-    }
+            .timetable-interface {
+                flex-direction: column;
+                height: 100vh;
+                padding: 0;
+                gap: 0;
+                overflow: hidden;
+            }
 
-    /* Controls fixed at bottom with specific height */
-    .accessories-panel {
-        flex: 0 0 auto;
-        order: 2;
-        gap: 8px;
-        padding: 10px;
-        background: var(--bg-secondary);
-        border-top: 2px solid var(--border-color);
-        box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
-        overflow: visible;
-        display: flex;
-        flex-direction: column;
-        max-height: 50vh; /* Never takes more than half screen */
-    }
+            .timetable-panel {
+                flex: 1;
+                order: 1;
+                padding: 16px;
+                overflow-x: auto;
+                overflow-y: auto;
+                border-radius: 0;
+            }
 
-    .start-driving-btn {
-        font-size: 16px;
-        padding: 12px;
-        margin-bottom: 0;
-    }
+            .accessories-panel {
+                flex: 0 0 auto;
+                order: 2;
+                gap: 12px;
+                padding: 16px;
+                background: var(--bg-card);
+                border-top: 3px solid var(--coral);
+                box-shadow: 0 -4px 16px rgba(0,0,0,0.12);
+                max-height: 50vh;
+            }
 
-    /* Two clocks side by side - MOBILE ONLY */
-    .clock-container {
-        display: flex;
-        gap: 8px;
-    }
+            .start-driving-btn {
+                font-size: 18px;
+                padding: 16px;
+                margin-bottom: 12px;
+            }
 
-    .accessories-panel > .clock-card:first-child,
-    .accessories-panel > .clock-card:nth-child(2) {
-        flex: 1;
-        padding: 8px;
-    }
+            .clock-container {
+                display: flex;
+                gap: 12px;
+            }
 
-    .clock-card h3 {
-        font-size: 9px;
-        margin-bottom: 2px;
-    }
+            .accessories-panel > .clock-card:first-child,
+            .accessories-panel > .clock-card:nth-child(2) {
+                flex: 1;
+                padding: 12px;
+            }
 
-    .clock-time {
-        font-size: 18px;
-    }
+            .clock-card h3 {
+                font-size: 9px;
+                margin-bottom: 4px;
+            }
 
-    .clock-large {
-        font-size: 20px;
-    }
+            .clock-time {
+                font-size: 20px;
+            }
 
-    /* Next stop card - compact */
-    .next-stop-card {
-        padding: 10px;
-        flex-shrink: 0;
-    }
+            .clock-large {
+                font-size: 22px;
+            }
 
-    .next-stop-card h3 {
-        font-size: 11px;
-        margin-bottom: 4px;
-    }
+            .next-stop-card {
+                padding: 16px;
+            }
 
-    .next-stop-info {
-        font-size: 16px;
-        margin-bottom: 6px;
-    }
+            .next-stop-card h3 {
+                font-size: 11px;
+                margin-bottom: 8px;
+            }
 
-    .next-stop-times {
-        gap: 6px;
-        margin-bottom: 6px;
-        font-size: 11px;
-    }
+            .next-stop-info {
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
 
-    .time-label {
-        font-size: 9px;
-    }
+            .next-stop-times {
+                gap: 8px;
+                margin-bottom: 12px;
+            }
 
-    .time-value {
-        font-size: 13px;
-    }
+            .time-block {
+                padding: 10px;
+            }
 
-    /* Arrange main action buttons in a 2-column grid */
-    .control-buttons {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-    }
+            .time-label {
+                font-size: 9px;
+            }
 
-    /* Arrived and Departed buttons - LARGEST */
-    .control-buttons .btn-arrived,
-    .control-buttons .btn-departed {
-        padding: 14px 10px;
-        font-size: 15px;
-        font-weight: 700;
-    }
+            .time-value {
+                font-size: 14px;
+            }
 
-    /* Previous button spans full width */
-    .control-buttons .btn-previous {
-        grid-column: 1 / -1;
-        padding: 12px 10px;
-        font-size: 14px;
-    }
+            .control-buttons {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
 
-    .control-btn {
-        padding: 10px 8px;
-        font-size: 13px;
-    }
+            .control-buttons .btn-arrived,
+            .control-buttons .btn-departed {
+                padding: 16px 12px;
+                font-size: 14px;
+            }
 
-    /* End shift and turnaround - FULL WIDTH each, stacked */
-    .btn-end-shift,
-    .btn-turnaround {
-        display: block;
-        width: 100%;
-        padding: 12px 10px;
-        font-size: 14px;
-        margin: 0;
-    }
+            .control-buttons .btn-previous {
+                grid-column: 1 / -1;
+                padding: 14px;
+                font-size: 13px;
+            }
 
-    .btn-end-shift {
-        margin-bottom: 8px;
-    }
+            .control-btn {
+                padding: 12px;
+                font-size: 13px;
+            }
 
-    /* Keep table in table format - horizontal scroll within frame */
-    .timetable-panel table {
-        width: 100%;
-        display: table;
-        min-width: 600px;
-    }
+            .btn-end-shift,
+            .btn-turnaround {
+                display: block;
+                width: 100%;
+                padding: 14px;
+                font-size: 13px;
+            }
 
-    /* Make table headers sticky within the scrollable frame */
-    .timetable-panel thead {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
+            .btn-end-shift {
+                margin-bottom: 10px;
+            }
 
-    th {
-        background: var(--blue-primary);
-        position: sticky;
-        top: 0;
-    }
+            th:nth-child(4), 
+            td:nth-child(4),
+            th:nth-child(5), 
+            td:nth-child(5) {
+                display: none;
+            }
 
-    /* Compact table cells */
-    th, td {
-        padding: 8px 6px;
-        font-size: 11px;
-    }
+            th:nth-child(1), td:nth-child(1) { width: 35%; }
+            th:nth-child(2), td:nth-child(2) { width: 22%; }
+            th:nth-child(3), td:nth-child(3) { width: 22%; }
+            th:nth-child(6), td:nth-child(6) { width: 21%; }
 
-    .delta {
-        font-size: 10px;
-    }
-}
-    @media (max-width: 768px) {
-    /* ... keep all previous mobile styles ... */
+            .timetable-panel table {
+                width: 100%;
+                display: table;
+                min-width: 100%;
+            }
 
-    /* Hide delta columns on mobile */
-    th:nth-child(4), 
-    td:nth-child(4),
-    th:nth-child(5), 
-    td:nth-child(5) {
-        display: none;
-    }
+            th {
+                padding: 12px 10px;
+                font-size: 12px;
+            }
 
-    /* Adjust remaining column widths for better space usage */
-    th:nth-child(1), td:nth-child(1) { width: 35%; } /* Station */
-    th:nth-child(2), td:nth-child(2) { width: 22%; } /* Arrival */
-    th:nth-child(3), td:nth-child(3) { width: 22%; } /* Departure */
-    th:nth-child(6), td:nth-child(6) { width: 21%; } /* Remarks */
+            td {
+                padding: 14px 10px;
+                font-size: 14px;
+            }
 
-    /* Keep table in table format - may not need horizontal scroll now */
-    .timetable-panel table {
-        width: 100%;
-        display: table;
-        min-width: 100%; /* Removed forced scroll since we have fewer columns */
-    }
-
-    /* Make table headers sticky within the scrollable frame */
-    .timetable-panel thead {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
-
-    th {
-        background: var(--blue-primary);
-        position: sticky;
-        top: 0;
-        padding: 10px 8px;
-        font-size: 13px; /* Bigger header text */
-    }
-
-    /* Bigger table text for better readability */
-    td {
-        padding: 12px 8px;
-        font-size: 14px; /* Increased from 11px */
-        line-height: 1.4;
-    }
-
-    /* Station names even bigger */
-    td:nth-child(1) {
-        font-size: 15px;
-        font-weight: 600;
-    }
-    
-    .pass-label {
-    font-weight: 700;
-    color: #f44336;
-    background: rgba(244, 67, 54, 0.1);
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-right: 8px;
-    }
-    /* ... rest of mobile styles ... */
-}
+            td:nth-child(1) {
+                font-size: 15px;
+                font-weight: 700;
+            }
+        }
     </style>
 </head>
 <body>
@@ -790,21 +902,21 @@
                 <h3>Next Stop</h3>
                 <div class="next-stop-info" id="nextStopName">---</div>
                 <div class="next-stop-times">
-                    <div>
+                    <div class="time-block">
                         <div class="time-label">Arrival</div>
                         <div class="time-value" id="nextStopArrival">--:--:--</div>
                     </div>
-                    <div>
+                    <div class="time-block">
                         <div class="time-label">Departure</div>
                         <div class="time-value" id="nextStopDeparture">--:--:--</div>
                     </div>
                 </div>
                 <div class="control-buttons">
-                    <button class="control-btn btn-arrived" id="arrivedBtn" disabled>Already Arrived</button>
-                    <button class="control-btn btn-departed" id="departedBtn" disabled>Already Departed</button>
+                    <button class="control-btn btn-arrived" id="arrivedBtn" disabled>Arrived</button>
+                    <button class="control-btn btn-departed" id="departedBtn" disabled>Departed</button>
                     <button class="control-btn btn-previous" id="previousBtn" disabled>Previous Stop</button>
                     <button class="control-btn btn-end-shift" id="endShiftBtn">End Shift</button>
-                    <button class="control-btn btn-turnaround" id="turnaroundBtn" disabled>Run Turnaround</button>
+                    <button class="control-btn btn-turnaround" id="turnaroundBtn" disabled>Turnaround</button>
                 </div>
             </div>
         </div>
@@ -814,29 +926,21 @@
     <dialog id="shiftReportDialog">
         <form method="dialog" style="display:flex; flex-direction:column; gap:16px;">
             <h2>End of Shift Report</h2>
-            <pre id="shiftReportContent" style="background:#e3f2fd; padding:12px; border-radius:8px; max-height:300px; overflow-y:auto;"></pre>
+            <pre id="shiftReportContent"></pre>
             <menu style="display:flex; justify-content:flex-end; gap:12px;">
                 <button id="closeReportBtn" class="control-btn btn-arrived">Close</button>
             </menu>
         </form>
     </dialog>
 
-
-
-    <script>
-    // All your JS code here
-    </script>
-
-
     <script defer>
     let ROUTES = {};
     let selectedRoute = null;
-    let selectedRouteData = null; // Store full route data including turnaround time
+    let selectedRouteData = null;
     let timetableData = [];
     let currentStopIndex = 0;
     let isDriving = false;
 
-    // Load routes from JSON file
     async function loadRoutes() {
         try {
             const response = await fetch('routes.json');
@@ -851,10 +955,9 @@
         }
     }
 
-    // Initialize route selection
     function initRoutes() {
         const container = document.getElementById('routeButtons');
-        container.innerHTML = ''; // Clear any existing buttons
+        container.innerHTML = '';
         
         Object.keys(ROUTES).forEach(routeName => {
             const btn = document.createElement('button');
@@ -867,7 +970,7 @@
 
     function selectRoute(routeName) {
         selectedRoute = routeName;
-        selectedRouteData = ROUTES[routeName]; // Store the full route data
+        selectedRouteData = ROUTES[routeName];
         document.querySelectorAll('.route-btn').forEach(btn => {
             btn.classList.toggle('selected', btn.textContent === routeName);
         });
@@ -888,7 +991,9 @@
         const now = new Date();
         generateTimetable(now);
         document.getElementById('startDrivingBtn').textContent = 'Driving...';
-        document.getElementById('startDrivingBtn').style.background = '#666';
+        document.getElementById('startDrivingBtn').style.background = 'var(--text-secondary)';
+        document.getElementById('startDrivingBtn').style.borderColor = 'var(--text-secondary)';
+        document.getElementById('startDrivingBtn').style.color = 'var(--bg-primary)';
         updateNextStop();
     };
 
@@ -901,17 +1006,13 @@
             cumulativeTime += stop.runningTime;
             const arrivalTime = new Date(startTime.getTime() + cumulativeTime * 1000);
             
-            // For passing stations, no dwell time and no arrival time shown
             let departureTime = null;
             if (stop.isPass) {
-                // Passing station - departure time is same as arrival
                 departureTime = new Date(arrivalTime);
             } else if (i < stops.length - 1) {
-                // Regular stop - add dwell time
                 const dwellTime = stop.dwellTime || 0;
                 departureTime = new Date(arrivalTime.getTime() + dwellTime * 1000);
             }
-            // Last stop has no departure time
 
             timetableData.push({
                 station: stop.station,
@@ -932,15 +1033,12 @@
         const seconds = date.getSeconds();
         const milliseconds = date.getMilliseconds();
         
-        // Calculate how many seconds until next 15-second mark
         const remainder = seconds % 15;
         
-        // If already on a 15-second mark and no milliseconds, keep as is
         if (remainder === 0 && milliseconds === 0) {
             return new Date(date);
         }
         
-        // Otherwise, round UP to next 15-second mark
         const secondsToAdd = 15 - remainder;
         const newDate = new Date(date);
         newDate.setSeconds(seconds + secondsToAdd, 0);
@@ -949,107 +1047,95 @@
     }
 
     function renderTimetable() {
-    const tbody = document.getElementById('timetableBody');
-    tbody.innerHTML = '';
+        const tbody = document.getElementById('timetableBody');
+        tbody.innerHTML = '';
 
-    timetableData.forEach((stop, i) => {
-        const row = tbody.insertRow();
-        if (i === currentStopIndex) row.classList.add('current-stop');
-        if (i < currentStopIndex) row.classList.add('completed');
+        timetableData.forEach((stop, i) => {
+            const row = tbody.insertRow();
+            if (i === currentStopIndex) row.classList.add('current-stop');
+            if (i < currentStopIndex) row.classList.add('completed');
 
-        // Station name with "[PASS]" prefix if it's a passing station
-        const stationCell = row.insertCell(0);
-        if (stop.isPass) {
-            stationCell.innerHTML = `<span class="pass-label">[PASS]</span>${stop.station}`;
-        } else {
-            stationCell.textContent = stop.station;
-        }
-        
-        // Arrival time - hide for passing stations AND first stop
-        const arrivalCell = row.insertCell(1);
-        if (i === 0) {
-            // First stop - no arrival time
-            arrivalCell.textContent = '---';
-        } else if (stop.isPass) {
-            // Passing station - no arrival time
-            arrivalCell.textContent = '---';
-        } else {
-            arrivalCell.textContent = formatTime(stop.scheduledArrival);
-        }
-        
-        // Departure time - hide for last stop
-        const departureCell = row.insertCell(2);
-        if (i === timetableData.length - 1) {
-            // Last stop - no departure time
-            departureCell.textContent = '---';
-        } else {
-            departureCell.textContent = stop.scheduledDeparture ? formatTime(stop.scheduledDeparture) : '---';
-        }
-        
-        const arrDelta = row.insertCell(3);
-        const depDelta = row.insertCell(4);
-        
-        // Delta for arrival - only show if not passing station AND not first stop
-        if (stop.actualArrival && !stop.isPass && i !== 0) {
-            const delta = Math.round((stop.actualArrival - stop.scheduledArrival) / 1000);
-            arrDelta.innerHTML = `<span class="delta ${delta < 0 ? 'early' : delta > 0 ? 'late' : 'ontime'}">${delta > 0 ? '+' : ''}${delta}s</span>`;
-        }
-        
-        // Delta for departure - only show if not last stop
-        if (stop.actualDeparture && stop.scheduledDeparture && i !== timetableData.length - 1) {
-            const delta = Math.round((stop.actualDeparture - stop.scheduledDeparture) / 1000);
-            depDelta.innerHTML = `<span class="delta ${delta < 0 ? 'early' : delta > 0 ? 'late' : 'ontime'}">${delta > 0 ? '+' : ''}${delta}s</span>`;
-        }
-        
-        row.insertCell(5).textContent = stop.remarks;
-    });
-}
+            const stationCell = row.insertCell(0);
+            if (stop.isPass) {
+                stationCell.innerHTML = `<span class="pass-label">PASS</span>${stop.station}`;
+            } else {
+                stationCell.textContent = stop.station;
+            }
+            
+            const arrivalCell = row.insertCell(1);
+            if (i === 0) {
+                arrivalCell.textContent = '---';
+            } else if (stop.isPass) {
+                arrivalCell.textContent = '---';
+            } else {
+                arrivalCell.textContent = formatTime(stop.scheduledArrival);
+            }
+            
+            const departureCell = row.insertCell(2);
+            if (i === timetableData.length - 1) {
+                departureCell.textContent = '---';
+            } else {
+                departureCell.textContent = stop.scheduledDeparture ? formatTime(stop.scheduledDeparture) : '---';
+            }
+            
+            const arrDelta = row.insertCell(3);
+            const depDelta = row.insertCell(4);
+            
+            if (stop.actualArrival && !stop.isPass && i !== 0) {
+                const delta = Math.round((stop.actualArrival - stop.scheduledArrival) / 1000);
+                arrDelta.innerHTML = `<span class="delta ${delta < 0 ? 'early' : delta > 0 ? 'late' : 'ontime'}">${delta > 0 ? '+' : ''}${delta}s</span>`;
+            }
+            
+            if (stop.actualDeparture && stop.scheduledDeparture && i !== timetableData.length - 1) {
+                const delta = Math.round((stop.actualDeparture - stop.scheduledDeparture) / 1000);
+                depDelta.innerHTML = `<span class="delta ${delta < 0 ? 'early' : delta > 0 ? 'late' : 'ontime'}">${delta > 0 ? '+' : ''}${delta}s</span>`;
+            }
+            
+            row.insertCell(5).textContent = stop.remarks;
+        });
+    }
 
     function updateNextStop() {
-    if (currentStopIndex >= timetableData.length) {
-        document.getElementById('nextStopName').textContent = 'Journey Complete';
-        document.getElementById('arrivedBtn').disabled = true;
-        document.getElementById('departedBtn').disabled = true;
-        document.getElementById('turnaroundBtn').disabled = false;
-        return;
-    }
+        if (currentStopIndex >= timetableData.length) {
+            document.getElementById('nextStopName').textContent = 'Journey Complete';
+            document.getElementById('arrivedBtn').disabled = true;
+            document.getElementById('departedBtn').disabled = true;
+            document.getElementById('turnaroundBtn').disabled = false;
+            return;
+        }
 
-    const stop = timetableData[currentStopIndex];
-    
-    // Display station name with [PASS] label if needed
-    const nextStopNameEl = document.getElementById('nextStopName');
-    if (stop.isPass) {
-        nextStopNameEl.innerHTML = `<span class="pass-label">[PASS]</span>${stop.station}`;
-    } else {
-        nextStopNameEl.textContent = stop.station;
-    }
-    
-    // For passing stations, show only departure time in both fields
-    if (stop.isPass) {
-        document.getElementById('nextStopArrival').textContent = '---';
-        document.getElementById('nextStopDeparture').textContent = formatTime(stop.scheduledDeparture);
-    } else {
-        document.getElementById('nextStopArrival').textContent = formatTime(stop.scheduledArrival);
-        document.getElementById('nextStopDeparture').textContent = stop.scheduledDeparture ? formatTime(stop.scheduledDeparture) : '---';
-    }
-    
-    // For passing stations, skip arrival button
-    if (stop.isPass) {
-        document.getElementById('arrivedBtn').disabled = true;
-        document.getElementById('departedBtn').disabled = false;
-    } else {
-        document.getElementById('arrivedBtn').disabled = false;
-        document.getElementById('departedBtn').disabled = stop.actualArrival === null;
-    }
-    
-    document.getElementById('previousBtn').disabled = currentStopIndex === 0;
+        const stop = timetableData[currentStopIndex];
+        
+        const nextStopNameEl = document.getElementById('nextStopName');
+        if (stop.isPass) {
+            nextStopNameEl.innerHTML = `<span class="pass-label">PASS</span>${stop.station}`;
+        } else {
+            nextStopNameEl.textContent = stop.station;
+        }
+        
+        if (stop.isPass) {
+            document.getElementById('nextStopArrival').textContent = '---';
+            document.getElementById('nextStopDeparture').textContent = formatTime(stop.scheduledDeparture);
+        } else {
+            document.getElementById('nextStopArrival').textContent = formatTime(stop.scheduledArrival);
+            document.getElementById('nextStopDeparture').textContent = stop.scheduledDeparture ? formatTime(stop.scheduledDeparture) : '---';
+        }
+        
+        if (stop.isPass) {
+            document.getElementById('arrivedBtn').disabled = true;
+            document.getElementById('departedBtn').disabled = false;
+        } else {
+            document.getElementById('arrivedBtn').disabled = false;
+            document.getElementById('departedBtn').disabled = stop.actualArrival === null;
+        }
+        
+        document.getElementById('previousBtn').disabled = currentStopIndex === 0;
     }
 
     document.getElementById('arrivedBtn').onclick = () => {
         if (currentStopIndex < timetableData.length) {
             const stop = timetableData[currentStopIndex];
             
-            // Skip arrival for passing stations
             if (stop.isPass) return;
             
             timetableData[currentStopIndex].actualArrival = new Date();
@@ -1062,15 +1148,13 @@
         if (currentStopIndex < timetableData.length) {
             const stop = timetableData[currentStopIndex];
             
-            // For passing stations, record departure directly
             if (stop.isPass) {
                 timetableData[currentStopIndex].actualDeparture = new Date();
-                // Also record arrival as same time for passing stations
                 timetableData[currentStopIndex].actualArrival = new Date();
             } else if (timetableData[currentStopIndex].actualArrival) {
                 timetableData[currentStopIndex].actualDeparture = new Date();
             } else {
-                return; // Don't allow departure without arrival for regular stops
+                return;
             }
             
             currentStopIndex++;
@@ -1095,7 +1179,7 @@
     document.getElementById('turnaroundBtn').onclick = () => {
         if (!selectedRouteData) return;
         
-        const turnaroundTime = selectedRouteData.turnaroundTime || 300; // Default 5 minutes
+        const turnaroundTime = selectedRouteData.turnaroundTime || 300;
         const turnaroundMinutes = Math.floor(turnaroundTime / 60);
         const turnaroundSeconds = turnaroundTime % 60;
         const timeString = turnaroundSeconds > 0 
@@ -1106,7 +1190,6 @@
         
         if (!confirm(message)) return;
         
-        // Disable controls during turnaround
         document.getElementById('arrivedBtn').disabled = true;
         document.getElementById('departedBtn').disabled = true;
         document.getElementById('previousBtn').disabled = true;
@@ -1115,15 +1198,9 @@
         document.getElementById('nextStopArrival').textContent = '--:--:--';
         document.getElementById('nextStopDeparture').textContent = '--:--:--';
         
-        // Show countdown or wait
         setTimeout(() => {
-            // Reverse the route stops
             const reversedStops = [...selectedRouteData.stops].reverse();
-            
-            // Update the route data temporarily
             selectedRouteData.stops = reversedStops;
-            
-            // Reset and start new journey
             currentStopIndex = 0;
             isDriving = true;
             
@@ -1163,29 +1240,26 @@
         });
     };
 
-    // Function to reset timetable state
     function resetShiftState() {
         isDriving = false;
         currentStopIndex = 0;
         timetableData = [];
 
-        // Hide timetable interface, show main menu
         document.getElementById('timetableInterface').classList.remove('active');
         document.getElementById('routeSelection').style.display = 'flex';
 
-        // Reset buttons
         document.getElementById('startDrivingBtn').textContent = 'Start Driving';
-        document.getElementById('startDrivingBtn').style.background = 'var(--success)';
+        document.getElementById('startDrivingBtn').style.background = 'var(--text-primary)';
+        document.getElementById('startDrivingBtn').style.borderColor = 'var(--text-primary)';
+        document.getElementById('startDrivingBtn').style.color = 'var(--bg-primary)';
         document.getElementById('arrivedBtn').disabled = true;
         document.getElementById('departedBtn').disabled = true;
         document.getElementById('previousBtn').disabled = true;
         document.getElementById('turnaroundBtn').disabled = true;
         
-        // Reload routes to restore original order
         loadRoutes();
     }
 
-    // Show the end-of-shift report
     document.getElementById('endShiftBtn').onclick = () => {
         if (!isDriving) return;
 
@@ -1209,23 +1283,15 @@
         }
     };
 
-    // Close dialog and reset state
     document.getElementById('closeReportBtn').onclick = () => {
         const dialog = document.getElementById('shiftReportDialog');
         dialog.close();
         resetShiftState();
     };
 
-    // Load routes on page load
     loadRoutes();
     setInterval(updateClocks, 100);
     updateClocks();
-</script>
-    <!-- Modal for post-shift report (moved pre-script) -->
-</div>
-
-</div>
-
+    </script>
 </body>
-
 </html>
