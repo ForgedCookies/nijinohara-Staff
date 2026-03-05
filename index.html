@@ -33,14 +33,15 @@
             --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
         }
 
-        [data-theme="dark"] {
-            --bg-primary: #1A1A2E;
-            --bg-card: #2D3142;
-            --text-primary: #F7F7F7;
-            --text-secondary: #A8DADC;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.4);
-            --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+        [data-theme="high-contrast"] {
+            --bg-primary: #000000;
+            --bg-card: #000000;
+            --text-primary: #FFFFFF;
+            --text-secondary: #FFFFFF;
+            --midnight: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(255,255,255,0.3);
+            --shadow-md: 0 4px 16px rgba(255,255,255,0.4);
+            --shadow-lg: 0 8px 32px rgba(255,255,255,0.5);
         }
 
         body {
@@ -228,6 +229,8 @@
             overflow-y: auto;
             box-shadow: var(--shadow-md);
             border: 2px solid var(--text-secondary);
+            display: flex;
+            flex-direction: column;
         }
 
         .timetable-panel::-webkit-scrollbar {
@@ -338,7 +341,7 @@
         .control-btn {
             position: relative;
             padding: 16px 20px;
-            border: 2px solid var(--text-primary);
+            border: 3px solid var(--text-primary);
             border-radius: 0;
             font-size: 14px;
             font-weight: 600;
@@ -413,13 +416,43 @@
         }
 
         .btn-turnaround {
-            border-color: var(--text-secondary);
-            color: var(--text-secondary);
+            border-color: var(--violet);
+            color: var(--violet);
         }
 
         .btn-turnaround:hover:not(:disabled) {
-            background: var(--text-secondary);
-            color: var(--bg-primary);
+            background: var(--violet);
+            color: white;
+        }
+
+        [data-theme="high-contrast"] .btn-arrived {
+            border-color: var(--success);
+            background: var(--success);
+            color: #000000;
+        }
+
+        [data-theme="high-contrast"] .btn-departed {
+            border-color: var(--ocean);
+            background: var(--ocean);
+            color: #000000;
+        }
+
+        [data-theme="high-contrast"] .btn-previous {
+            border-color: var(--alert);
+            background: var(--alert);
+            color: #000000;
+        }
+
+        [data-theme="high-contrast"] .btn-end-shift {
+            border-color: var(--danger);
+            background: var(--danger);
+            color: #FFFFFF;
+        }
+
+        [data-theme="high-contrast"] .btn-turnaround {
+            border-color: var(--violet);
+            background: var(--violet);
+            color: #000000;
         }
 
         .start-driving-btn {
@@ -448,6 +481,11 @@
             transform: none;
         }
 
+        .table-container {
+            flex: 1;
+            overflow-y: auto;
+        }
+
         table {
             width: 100%;
             border-collapse: separate;
@@ -469,6 +507,12 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: 13px;
+        }
+
+        [data-theme="high-contrast"] th {
+            background: #FFFFFF;
+            color: #000000;
+            border: 3px solid #FFFFFF;
         }
 
         th:first-child {
@@ -517,6 +561,15 @@
             font-weight: 600;
         }
 
+        [data-theme="high-contrast"] tr.current-stop {
+            background: var(--sunshine);
+        }
+
+        [data-theme="high-contrast"] tr.current-stop td {
+            border-color: var(--coral);
+            color: #000000;
+        }
+
         tr.completed {
             opacity: 0.4;
         }
@@ -547,6 +600,18 @@
             background: transparent;
             color: var(--text-secondary);
             border-color: var(--text-secondary);
+        }
+
+        [data-theme="high-contrast"] .delta.early {
+            background: var(--success);
+            color: #000000;
+            border-color: var(--success);
+        }
+
+        [data-theme="high-contrast"] .delta.late {
+            background: var(--danger);
+            color: #FFFFFF;
+            border-color: var(--danger);
         }
 
         span.pass-label {
@@ -582,6 +647,103 @@
         .theme-toggle:hover {
             background: var(--bg-primary);
             color: var(--text-primary);
+        }
+
+        .focus-toggle {
+            position: fixed;
+            top: 24px;
+            right: 92px;
+            width: 56px;
+            height: 56px;
+            border-radius: 0;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border: 2px solid var(--text-primary);
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+            transition: all 0.2s ease;
+            display: none;
+        }
+
+        .focus-toggle:hover {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .timetable-interface.active ~ .focus-toggle {
+            display: block;
+        }
+
+        /* Focus Mode */
+        .timetable-interface.focus-mode {
+            padding: 0;
+            gap: 0;
+        }
+
+        .timetable-interface.focus-mode .timetable-panel {
+            display: none;
+        }
+
+        .timetable-interface.focus-mode .accessories-panel {
+            flex: 1;
+            padding: 32px;
+            gap: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .timetable-interface.focus-mode .clock-card:first-child {
+            display: none;
+        }
+
+        .timetable-interface.focus-mode .clock-card:nth-child(2) {
+            padding: 40px;
+        }
+
+        .timetable-interface.focus-mode .clock-card h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .timetable-interface.focus-mode .clock-time {
+            font-size: 72px;
+        }
+
+        .timetable-interface.focus-mode .next-stop-card {
+            padding: 40px;
+        }
+
+        .timetable-interface.focus-mode .next-stop-card h3 {
+            font-size: 18px;
+        }
+
+        .timetable-interface.focus-mode .next-stop-info {
+            font-size: 48px;
+        }
+
+        .timetable-interface.focus-mode .next-stop-times {
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .timetable-interface.focus-mode .time-block {
+            padding: 24px;
+        }
+
+        .timetable-interface.focus-mode .time-label {
+            font-size: 14px;
+        }
+
+        .timetable-interface.focus-mode .time-value {
+            font-size: 36px;
+        }
+
+        .timetable-interface.focus-mode .control-btn {
+            padding: 24px;
+            font-size: 18px;
         }
 
         .modal {
@@ -694,6 +856,22 @@
                 font-size: 24px;
             }
 
+            .theme-toggle {
+                top: 16px;
+                right: 16px;
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+
+            .focus-toggle {
+                top: 16px;
+                right: 72px;
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+
             .timetable-interface {
                 flex-direction: column;
                 height: 100vh;
@@ -709,6 +887,8 @@
                 overflow-x: auto;
                 overflow-y: auto;
                 border-radius: 0;
+                border: none;
+                border-bottom: 3px solid var(--coral);
             }
 
             .accessories-panel {
@@ -719,7 +899,8 @@
                 background: var(--bg-card);
                 border-top: 3px solid var(--coral);
                 box-shadow: 0 -4px 16px rgba(0,0,0,0.12);
-                max-height: 50vh;
+                overflow-y: auto;
+                max-height: none;
             }
 
             .start-driving-btn {
@@ -786,24 +967,24 @@
             .control-buttons {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 10px;
+                gap: 8px;
             }
 
             .control-buttons .btn-arrived,
             .control-buttons .btn-departed {
                 padding: 16px 12px;
-                font-size: 14px;
+                font-size: 13px;
             }
 
             .control-buttons .btn-previous {
                 grid-column: 1 / -1;
                 padding: 14px;
-                font-size: 13px;
+                font-size: 12px;
             }
 
             .control-btn {
                 padding: 12px;
-                font-size: 13px;
+                font-size: 12px;
             }
 
             .btn-end-shift,
@@ -811,11 +992,8 @@
                 display: block;
                 width: 100%;
                 padding: 14px;
-                font-size: 13px;
-            }
-
-            .btn-end-shift {
-                margin-bottom: 10px;
+                font-size: 12px;
+                grid-column: 1 / -1;
             }
 
             th:nth-child(4), 
@@ -838,23 +1016,77 @@
 
             th {
                 padding: 12px 10px;
-                font-size: 12px;
+                font-size: 11px;
             }
 
             td {
                 padding: 14px 10px;
-                font-size: 14px;
+                font-size: 13px;
             }
 
             td:nth-child(1) {
-                font-size: 15px;
+                font-size: 14px;
                 font-weight: 700;
+            }
+
+            /* Focus Mode Mobile */
+            .timetable-interface.focus-mode .accessories-panel {
+                padding: 20px;
+                gap: 16px;
+            }
+
+            .timetable-interface.focus-mode .clock-card:nth-child(2) {
+                padding: 24px;
+            }
+
+            .timetable-interface.focus-mode .clock-card h3 {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+
+            .timetable-interface.focus-mode .clock-time {
+                font-size: 42px;
+            }
+
+            .timetable-interface.focus-mode .next-stop-card {
+                padding: 24px;
+            }
+
+            .timetable-interface.focus-mode .next-stop-card h3 {
+                font-size: 13px;
+            }
+
+            .timetable-interface.focus-mode .next-stop-info {
+                font-size: 28px;
+            }
+
+            .timetable-interface.focus-mode .next-stop-times {
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+
+            .timetable-interface.focus-mode .time-block {
+                padding: 16px;
+            }
+
+            .timetable-interface.focus-mode .time-label {
+                font-size: 10px;
+            }
+
+            .timetable-interface.focus-mode .time-value {
+                font-size: 20px;
+            }
+
+            .timetable-interface.focus-mode .control-btn {
+                padding: 18px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle High Contrast Mode">◐</button>
+    <button class="focus-toggle" onclick="toggleFocusMode()" title="Toggle Focus Mode">⊙</button>
 
     <!-- Route Selection Interface -->
     <div class="route-selection" id="routeSelection">
@@ -875,19 +1107,21 @@
     <div class="timetable-interface" id="timetableInterface">
         <div class="timetable-panel">
             <button class="start-driving-btn" id="startDrivingBtn">Start Driving</button>
-            <table id="timetableTable">
-                <thead>
-                    <tr>
-                        <th>Station</th>
-                        <th>Arrival Time</th>
-                        <th>Departure Time</th>
-                        <th>Δ Arrival</th>
-                        <th>Δ Departure</th>
-                        <th>Remarks</th>
-                    </tr>
-                </thead>
-                <tbody id="timetableBody"></tbody>
-            </table>
+            <div class="table-container">
+                <table id="timetableTable">
+                    <thead>
+                        <tr>
+                            <th>Station</th>
+                            <th>Arrival Time</th>
+                            <th>Departure Time</th>
+                            <th>Δ Arrival</th>
+                            <th>Δ Departure</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="timetableBody"></tbody>
+                </table>
+            </div>
         </div>
         <div class="accessories-panel">
             <div class="clock-card">
@@ -940,6 +1174,7 @@
     let timetableData = [];
     let currentStopIndex = 0;
     let isDriving = false;
+    let isFocusMode = false;
 
     async function loadRoutes() {
         try {
@@ -1228,9 +1463,22 @@
     function toggleTheme() {
         const html = document.documentElement;
         const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        const newTheme = currentTheme === 'high-contrast' ? 'light' : 'high-contrast';
         html.setAttribute('data-theme', newTheme);
-        document.querySelector('.theme-toggle').textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        document.querySelector('.theme-toggle').textContent = newTheme === 'high-contrast' ? '◑' : '◐';
+    }
+
+    function toggleFocusMode() {
+        isFocusMode = !isFocusMode;
+        const timetableInterface = document.getElementById('timetableInterface');
+        
+        if (isFocusMode) {
+            timetableInterface.classList.add('focus-mode');
+            document.querySelector('.focus-toggle').textContent = '⊕';
+        } else {
+            timetableInterface.classList.remove('focus-mode');
+            document.querySelector('.focus-toggle').textContent = '⊙';
+        }
     }
 
     document.getElementById('searchBar').oninput = (e) => {
@@ -1244,8 +1492,9 @@
         isDriving = false;
         currentStopIndex = 0;
         timetableData = [];
+        isFocusMode = false;
 
-        document.getElementById('timetableInterface').classList.remove('active');
+        document.getElementById('timetableInterface').classList.remove('active', 'focus-mode');
         document.getElementById('routeSelection').style.display = 'flex';
 
         document.getElementById('startDrivingBtn').textContent = 'Start Driving';
