@@ -968,9 +968,10 @@ function updateNextStop() {
     document.getElementById('nextStopDeparture').innerHTML =
         (currentStopIndex === timetableData.length - 1) ? '<span class="time-null">—</span>' : fmtTimeSplit(stop.scheduledDeparture);
 
-    document.getElementById('arrivedBtn').disabled = stop.isPass || currentStopIndex === 0;
-    document.getElementById('departedBtn').disabled = stop.isPass ? false : !stop.actualArrival;
-    document.getElementById('previousBtn').disabled = currentStopIndex === 0;
+    const isFirstStop = currentStopIndex === 0;
+    document.getElementById('arrivedBtn').disabled = stop.isPass || isFirstStop;
+    document.getElementById('departedBtn').disabled = stop.isPass ? false : (isFirstStop ? false : !stop.actualArrival);
+    document.getElementById('previousBtn').disabled = isFirstStop;
 }
 
 document.getElementById('arrivedBtn').onclick = () => {
@@ -988,7 +989,7 @@ document.getElementById('departedBtn').onclick = () => {
     if (stop.isPass) {
         timetableData[currentStopIndex].actualArrival = new Date();
         timetableData[currentStopIndex].actualDeparture = new Date();
-    } else if (stop.actualArrival) {
+    } else if (currentStopIndex === 0 || stop.actualArrival) {
         timetableData[currentStopIndex].actualDeparture = new Date();
     } else return;
     currentStopIndex++;
