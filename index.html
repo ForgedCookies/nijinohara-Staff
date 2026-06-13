@@ -4,1543 +4,1092 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Driver's Timetable System</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --coral: #FF6B6B;
-            --ocean: #4ECDC4;
-            --sunshine: #FFE66D;
-            --violet: #A8DADC;
-            --midnight: #1A1A2E;
-            --cloud: #F7F7F7;
-            --slate: #2D3142;
-            --success: #06D6A0;
-            --alert: #FF8C42;
-            --danger: #EF476F;
-            
-            --bg-primary: #F7F7F7;
-            --bg-card: #FFFFFF;
-            --text-primary: #1A1A2E;
-            --text-secondary: #6B6B7B;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
-            --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
-        }
-
-        [data-theme="high-contrast"] {
-            --bg-primary: #000000;
-            --bg-card: #000000;
-            --text-primary: #FFFFFF;
-            --text-secondary: #FFFFFF;
-            --midnight: #FFFFFF;
-            --shadow-sm: 0 2px 8px rgba(255,255,255,0.3);
-            --shadow-md: 0 4px 16px rgba(255,255,255,0.4);
-            --shadow-lg: 0 8px 32px rgba(255,255,255,0.5);
+            --ink: #0a0a0a;
+            --ink-mid: #2a2a2a;
+            --ink-light: #555;
+            --page: #f5f0e8;
+            --page-alt: #ede8dc;
+            --rule: #0a0a0a;
+            --rule-light: #555;
+            --salmon: #f2956a;
+            --salmon-light: #f7bfa0;
+            --salmon-header: #e07848;
+            --yellow-hi: #f5e840;
+            --green-on: #2a7a2a;
+            --red-late: #b81010;
+            --blue-early: #1055a0;
+            --pass-bg: #c8dff0;
+            --border-thick: 2.5px solid var(--ink);
+            --border-mid: 1.5px solid var(--ink);
+            --border-thin: 1px solid var(--rule-light);
         }
 
         body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            transition: background 0.3s ease, color 0.3s ease;
-            line-height: 1.6;
-        }
-
-        /* Route Selection Interface */
-        .route-selection {
+            font-family: 'Noto Sans JP', 'MS Gothic', 'Meiryo', monospace, sans-serif;
+            background: #888 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23777'/%3E%3Crect width='2' height='2' fill='%23666' opacity='0.4'/%3E%3C/svg%3E");
+            min-height: 100vh;
             display: flex;
-            height: 100vh;
-            gap: 24px;
-            padding: 24px;
-            background: var(--bg-primary);
-        }
-
-        .route-list-panel {
-            flex: 0 0 380px;
-            background: var(--bg-card);
-            border-radius: 0;
-            padding: 28px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: var(--shadow-md);
-            border: 2px solid var(--text-secondary);
-        }
-
-        .route-list-panel h2 {
-            margin-bottom: 24px;
-            color: var(--text-primary);
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .search-bar {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid var(--text-secondary);
-            border-radius: 0;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 20px;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.2s ease;
-        }
-
-        .search-bar:focus {
-            outline: none;
-            border-color: var(--text-primary);
-            box-shadow: none;
-        }
-
-        .route-buttons {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            padding-right: 8px;
-        }
-
-        .route-buttons::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .route-buttons::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-            border-radius: 0;
-        }
-
-        .route-buttons::-webkit-scrollbar-thumb {
-            background: var(--text-secondary);
-            border-radius: 0;
-        }
-
-        .route-btn {
-            padding: 18px 20px;
-            background: var(--bg-primary);
-            border: 2px solid var(--text-secondary);
-            border-radius: 0;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.15s ease;
-            position: relative;
-            text-align: left;
-        }
-
-        .route-btn:hover {
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            border-color: var(--text-primary);
-        }
-
-        .route-btn.selected {
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            border-color: var(--text-primary);
-        }
-
-        .map-panel {
-            flex: 1;
-            background: var(--bg-card);
-            border-radius: 0;
-            padding: 32px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
-            box-shadow: var(--shadow-md);
-            border: 2px solid var(--text-secondary);
-        }
-
-        .map-placeholder {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--ocean) 0%, var(--violet) 100%);
-            border-radius: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .confirm-btn {
-            margin-top: 28px;
-            padding: 18px 48px;
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            border: 2px solid var(--text-primary);
-            border-radius: 0;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        .confirm-btn:hover {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-
-        .confirm-btn:active {
-            transform: none;
-        }
-
-        .confirm-btn:disabled {
-            background: transparent;
-            color: var(--text-secondary);
-            border-color: var(--text-secondary);
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-
-        /* Timetable Interface */
-        .timetable-interface {
-            display: none;
-            height: 100vh;
-            padding: 24px;
-            gap: 24px;
-        }
-
-        .timetable-interface.active {
-            display: flex;
-        }
-
-        .timetable-panel {
-            flex: 1;
-            background: var(--bg-card);
-            border-radius: 0;
-            padding: 28px;
-            overflow-y: auto;
-            box-shadow: var(--shadow-md);
-            border: 2px solid var(--text-secondary);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .timetable-panel::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        .timetable-panel::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-            border-radius: 0;
-        }
-
-        .timetable-panel::-webkit-scrollbar-thumb {
-            background: var(--text-secondary);
-            border-radius: 0;
-        }
-
-        .accessories-panel {
-            flex: 0 0 360px;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .clock-card, .next-stop-card {
-            background: var(--bg-card);
-            border-radius: 0;
-            padding: 24px;
-            box-shadow: var(--shadow-md);
-            border: 2px solid var(--text-secondary);
-            transition: all 0.3s ease;
-        }
-
-        .clock-card h3 {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-        }
-
-        .clock-time {
-            font-size: 40px;
-            font-weight: 700;
-            font-variant-numeric: tabular-nums;
-            color: var(--ocean);
-            font-family: 'Space Mono', monospace;
-        }
-
-        .clock-large {
-            font-size: 52px;
-        }
-
-        .next-stop-card h3 {
-            font-size: 14px;
-            margin-bottom: 16px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-        }
-
-        .next-stop-info {
-            font-size: 40px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
-        }
-
-        .next-stop-times {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .time-block {
-            background: var(--bg-primary);
-            padding: 16px;
-            border-radius: 0;
-            border: 2px solid var(--text-secondary);
-        }
-
-        .time-label {
-            color: var(--text-secondary);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .time-value {
-            font-size: 20px;
-            font-weight: 700;
-            font-variant-numeric: tabular-nums;
-            color: var(--text-primary);
-            font-family: 'Space Mono', monospace;
-        }
-
-        .control-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .control-btn {
-            position: relative;
-            padding: 16px 20px;
-            border: 3px solid var(--text-primary);
-            border-radius: 0;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.15s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-
-        .control-btn:hover {
-            background: var(--text-primary);
-            color: var(--bg-primary);
-        }
-
-        .control-btn:active {
-            transform: none;
-        }
-
-        .control-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-
-        .control-btn:disabled:hover {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-
-        .btn-arrived {
-            border-color: var(--success);
-            color: var(--success);
-        }
-
-        .btn-arrived:hover:not(:disabled) {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-departed {
-            border-color: var(--ocean);
-            color: var(--ocean);
-        }
-
-        .btn-departed:hover:not(:disabled) {
-            background: var(--ocean);
-            color: white;
-        }
-
-        .btn-previous {
-            border-color: var(--alert);
-            color: var(--alert);
-        }
-
-        .btn-previous:hover:not(:disabled) {
-            background: var(--alert);
-            color: white;
-        }
-
-        .btn-end-shift {
-            border-color: var(--danger);
-            color: var(--danger);
-        }
-
-        .btn-end-shift:hover {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-turnaround {
-            border-color: var(--violet);
-            color: var(--violet);
-        }
-
-        .btn-turnaround:hover:not(:disabled) {
-            background: var(--violet);
-            color: white;
-        }
-
-        [data-theme="high-contrast"] .btn-arrived {
-            border-color: var(--success);
-            background: var(--success);
-            color: #000000;
-        }
-
-        [data-theme="high-contrast"] .btn-departed {
-            border-color: var(--ocean);
-            background: var(--ocean);
-            color: #000000;
-        }
-
-        [data-theme="high-contrast"] .btn-previous {
-            border-color: var(--alert);
-            background: var(--alert);
-            color: #000000;
-        }
-
-        [data-theme="high-contrast"] .btn-end-shift {
-            border-color: var(--danger);
-            background: var(--danger);
-            color: #FFFFFF;
-        }
-
-        [data-theme="high-contrast"] .btn-turnaround {
-            border-color: var(--violet);
-            background: var(--violet);
-            color: #000000;
-        }
-
-        .start-driving-btn {
-            width: 100%;
             padding: 20px;
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            border: 2px solid var(--text-primary);
-            border-radius: 0;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-bottom: 24px;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
         }
 
-        .start-driving-btn:hover {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-
-        .start-driving-btn:active {
-            transform: none;
-        }
-
-        .table-container {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        table {
+        /* === PAPER SHEET WRAPPER === */
+        .paper {
+            background: var(--page);
+            border: 3px solid var(--ink);
+            box-shadow: 4px 4px 0 #222, 8px 8px 0 #444;
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 8px;
+            max-width: 900px;
+            min-height: 100vh;
         }
 
-        thead {
-            position: sticky;
-            top: 0;
-            z-index: 10;
+        /* === ROUTE SELECTION === */
+        #routeSelection { display: flex; flex-direction: column; }
+
+        .sheet-header {
+            border-bottom: var(--border-thick);
+            padding: 10px 14px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            background: var(--page);
         }
 
-        th {
-            background: var(--midnight);
-            color: white;
-            padding: 18px 16px;
-            text-align: left;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 13px;
+        .sheet-header-left { font-size: 11px; color: var(--ink-mid); letter-spacing: 1px; }
+        .sheet-header-right { font-size: 11px; color: var(--ink-mid); letter-spacing: 1px; text-align: right; }
+
+        .route-select-body {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
         }
 
-        [data-theme="high-contrast"] th {
-            background: #FFFFFF;
-            color: #000000;
-            border: 3px solid #FFFFFF;
+        .route-title-row {
+            background: var(--salmon-header);
+            border-bottom: var(--border-thick);
+            padding: 10px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
         }
 
-        th:first-child {
-            border-radius: 0;
-        }
-
-        th:last-child {
-            border-radius: 0;
-        }
-
-        tbody tr {
-            background: var(--bg-primary);
-            transition: all 0.2s ease;
-        }
-
-        tbody tr:hover {
-            transform: none;
-            box-shadow: none;
-            background: var(--bg-card);
-        }
-
-        td {
-            padding: 18px 16px;
-            border-top: 2px solid var(--bg-card);
-            border-bottom: 2px solid var(--bg-card);
-            font-size: 15px;
-        }
-
-        td:first-child {
-            border-left: 2px solid var(--bg-card);
-            border-radius: 0;
-            font-weight: 600;
-        }
-
-        td:last-child {
-            border-right: 2px solid var(--bg-card);
-            border-radius: 0;
-        }
-
-        tr.current-stop {
-            background: var(--sunshine);
-        }
-
-        tr.current-stop td {
-            border-color: var(--coral);
-            font-weight: 600;
-        }
-
-        [data-theme="high-contrast"] tr.current-stop {
-            background: var(--sunshine);
-        }
-
-        [data-theme="high-contrast"] tr.current-stop td {
-            border-color: var(--coral);
-            color: #000000;
-        }
-
-        tr.completed {
-            opacity: 0.4;
-        }
-
-        .delta {
-            font-weight: 700;
-            font-size: 14px;
-            padding: 4px 10px;
-            border-radius: 0;
-            display: inline-block;
-            font-family: 'Space Mono', monospace;
-            border: 1px solid;
-        }
-
-        .delta.early {
-            background: transparent;
-            color: var(--success);
-            border-color: var(--success);
-        }
-
-        .delta.late {
-            background: transparent;
-            color: var(--danger);
-            border-color: var(--danger);
-        }
-
-        .delta.ontime {
-            background: transparent;
-            color: var(--text-secondary);
-            border-color: var(--text-secondary);
-        }
-
-        [data-theme="high-contrast"] .delta.early {
-            background: var(--success);
-            color: #000000;
-            border-color: var(--success);
-        }
-
-        [data-theme="high-contrast"] .delta.late {
-            background: var(--danger);
-            color: #FFFFFF;
-            border-color: var(--danger);
-        }
-
-        span.pass-label {
-            font-weight: 700;
-            color: white;
-            background: var(--text-primary);
-            padding: 4px 10px;
-            border-radius: 0;
-            margin-right: 10px;
-            display: inline-block;
+        .route-title-row label {
             font-size: 12px;
+            font-weight: 700;
+            color: var(--ink);
+            white-space: nowrap;
+            letter-spacing: 2px;
             text-transform: uppercase;
+        }
+
+        .search-input {
+            flex: 1;
+            background: var(--page);
+            border: var(--border-mid);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 15px;
+            padding: 6px 10px;
+            color: var(--ink);
+            outline: none;
+        }
+
+        .search-input:focus { border-color: var(--ink); background: #fff; }
+
+        .route-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            border-bottom: var(--border-thick);
+        }
+
+        .route-cell-btn {
+            background: var(--page);
+            border: none;
+            border-right: var(--border-thin);
+            border-bottom: var(--border-thin);
+            padding: 14px 16px;
+            text-align: left;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+            cursor: pointer;
+            transition: background 0.08s;
             letter-spacing: 0.5px;
         }
 
-        .theme-toggle {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            width: 56px;
-            height: 56px;
-            border-radius: 0;
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            border: 2px solid var(--text-primary);
+        .route-cell-btn:hover { background: var(--salmon-light); }
+        .route-cell-btn.selected { background: var(--salmon); color: #fff; }
+        .route-cell-btn:nth-child(even) { background: var(--page-alt); }
+        .route-cell-btn:nth-child(even):hover { background: var(--salmon-light); }
+        .route-cell-btn.selected:nth-child(even) { background: var(--salmon); }
+
+        .route-confirm-row {
+            padding: 16px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 16px;
+            border-top: var(--border-mid);
+        }
+
+        .selected-label {
+            font-size: 13px;
+            color: var(--ink-light);
+            font-style: italic;
+        }
+
+        .btn-confirm {
+            background: var(--ink);
+            color: var(--page);
+            border: 2px solid var(--ink);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 10px 28px;
             cursor: pointer;
-            font-size: 24px;
-            z-index: 1000;
-            box-shadow: var(--shadow-md);
-            transition: all 0.2s ease;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        .theme-toggle:hover {
-            background: var(--bg-primary);
-            color: var(--text-primary);
+        .btn-confirm:hover:not(:disabled) { background: var(--salmon-header); border-color: var(--salmon-header); }
+        .btn-confirm:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        /* === TIMETABLE INTERFACE === */
+        #timetableInterface { display: none; flex-direction: column; }
+        #timetableInterface.active { display: flex; }
+
+        /* ── Top header bar (route name, etc.) ── */
+        .tt-header {
+            border-bottom: var(--border-thick);
+            display: grid;
+            grid-template-columns: auto 1fr auto auto auto;
+            align-items: center;
         }
 
-        .focus-toggle {
-            position: fixed;
-            top: 24px;
-            right: 92px;
-            width: 56px;
-            height: 56px;
-            border-radius: 0;
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            border: 2px solid var(--text-primary);
-            cursor: pointer;
-            font-size: 24px;
-            z-index: 1000;
-            box-shadow: var(--shadow-md);
-            transition: all 0.2s ease;
-            display: none;
+        .tt-header-cell {
+            padding: 8px 12px;
+            border-right: var(--border-mid);
+            font-size: 12px;
+            letter-spacing: 1px;
         }
 
-        .focus-toggle:hover {
-            background: var(--bg-primary);
-            color: var(--text-primary);
+        .tt-header-cell:last-child { border-right: none; }
+
+        .tt-route-name {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            padding: 6px 16px;
         }
 
-        .timetable-interface.active ~ .focus-toggle {
-            display: block;
+        .tt-big-num {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 40px;
+            font-weight: 900;
+            color: var(--red-late);
+            padding: 4px 16px;
+            border: var(--border-thick);
+            margin: 4px;
+            line-height: 1;
         }
 
-        /* Focus Mode */
-        .timetable-interface.focus-mode {
-            padding: 0;
+        /* ── Clock bar ── */
+        .clock-bar {
+            border-bottom: var(--border-thick);
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            background: var(--ink);
+            color: var(--page);
+        }
+
+        .clock-cell {
+            padding: 6px 14px;
+            border-right: 1px solid #444;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .clock-cell:last-child { border-right: none; }
+
+        .clock-label {
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 2px;
+        }
+
+        .clock-val {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #f5e840;
+        }
+
+        .clock-val-sm { font-size: 16px; color: #ccc; }
+
+        /* ── Next stop panel ── */
+        .next-stop-bar {
+            border-bottom: var(--border-thick);
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            background: var(--page-alt);
+        }
+
+        .ns-station {
+            padding: 10px 14px;
+            border-right: var(--border-mid);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .ns-label {
+            font-size: 9px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--ink-light);
+        }
+
+        .ns-name {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--ink);
+            letter-spacing: -0.5px;
+        }
+
+        .ns-time-cell {
+            padding: 10px 14px;
+            border-right: var(--border-mid);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 110px;
+        }
+
+        .ns-time-cell:last-child { border-right: none; }
+
+        .ns-time-val {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        /* ── Action buttons ── */
+        .action-bar {
+            border-bottom: var(--border-thick);
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             gap: 0;
         }
 
-        .timetable-interface.focus-mode .timetable-panel {
-            display: none;
-        }
-
-        .timetable-interface.focus-mode .accessories-panel {
-            flex: 1;
-            padding: 32px;
-            gap: 24px;
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .timetable-interface.focus-mode .clock-card:first-child {
-            display: none;
-        }
-
-        .timetable-interface.focus-mode .clock-card:nth-child(2) {
-            padding: 40px;
-        }
-
-        .timetable-interface.focus-mode .clock-card h3 {
-            font-size: 16px;
-            margin-bottom: 16px;
-        }
-
-        .timetable-interface.focus-mode .clock-time {
-            font-size: 72px;
-        }
-
-        .timetable-interface.focus-mode .next-stop-card {
-            padding: 40px;
-        }
-
-        .timetable-interface.focus-mode .next-stop-card h3 {
-            font-size: 18px;
-        }
-
-        .timetable-interface.focus-mode .next-stop-info {
-            font-size: 48px;
-        }
-
-        .timetable-interface.focus-mode .next-stop-times {
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        .timetable-interface.focus-mode .time-block {
-            padding: 24px;
-        }
-
-        .timetable-interface.focus-mode .time-label {
-            font-size: 14px;
-        }
-
-        .timetable-interface.focus-mode .time-value {
-            font-size: 36px;
-        }
-
-        .timetable-interface.focus-mode .control-btn {
-            padding: 24px;
-            font-size: 18px;
-        }
-
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(26, 26, 46, 0.8);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            padding: 32px;
-            border-radius: 0;
-            width: 90%;
-            max-width: 550px;
-            max-height: 70vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-lg);
-            border: 2px solid var(--text-primary);
-        }
-
-        .modal-content h2 {
-            margin-bottom: 20px;
-            color: var(--text-primary);
-            font-size: 28px;
-        }
-
-        .modal-content pre {
-            background: var(--bg-primary);
-            padding: 20px;
-            border-radius: 0;
-            font-size: 14px;
-            line-height: 1.8;
-            border: 2px solid var(--text-secondary);
-        }
-
-        dialog#shiftReportDialog {
-            border: 2px solid var(--text-primary);
-            border-radius: 0;
-            padding: 32px;
-            max-width: 550px;
-            width: 90%;
-            background: var(--bg-card);
-            color: var(--text-primary);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin: 0;
-            box-shadow: var(--shadow-lg);
-        }
-
-        dialog::backdrop {
-            background: rgba(26, 26, 46, 0.8);
-            backdrop-filter: blur(4px);
-        }
-
-        dialog#shiftReportDialog h2 {
-            margin-bottom: 20px;
-            color: var(--text-primary);
-            font-size: 28px;
+        .action-btn {
+            background: var(--page);
+            border: none;
+            border-right: var(--border-mid);
+            padding: 12px 8px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
             font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--ink);
+            transition: background 0.08s;
         }
 
-        dialog#shiftReportDialog pre {
-            background: var(--bg-primary);
-            padding: 20px;
-            border-radius: 0;
-            max-height: 320px;
-            overflow-y: auto;
+        .action-btn:last-child { border-right: none; }
+        .action-btn:hover:not(:disabled) { background: var(--salmon-light); }
+        .action-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .action-btn:disabled:hover { background: var(--page); }
+
+        .action-btn:active:not(:disabled) { background: var(--salmon); color: #fff; }
+
+        .action-btn.btn-arrived { color: var(--green-on); border-bottom: 3px solid var(--green-on); }
+        .action-btn.btn-departed { color: var(--blue-early); border-bottom: 3px solid var(--blue-early); }
+        .action-btn.btn-previous { color: #a06010; border-bottom: 3px solid #a06010; }
+        .action-btn.btn-end { color: var(--red-late); border-bottom: 3px solid var(--red-late); }
+        .action-btn.btn-turn { color: #7030a0; border-bottom: 3px solid #7030a0; }
+
+        .action-btn.btn-arrived:hover:not(:disabled) { background: #e0f4e0; }
+        .action-btn.btn-departed:hover:not(:disabled) { background: #ddeeff; }
+        .action-btn.btn-end:hover { background: #fde0e0; }
+
+        /* ── Start driving row ── */
+        .start-row {
+            border-bottom: var(--border-thick);
+        }
+
+        .btn-start {
+            width: 100%;
+            background: var(--ink);
+            color: var(--page);
+            border: none;
+            padding: 14px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .btn-start:hover { background: #333; }
+        .btn-start.driving { background: var(--ink-light); cursor: default; }
+
+        /* ── Timetable ── */
+        .tt-table-wrap { overflow-x: auto; flex: 1; }
+
+        table.tt {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .tt thead th {
+            background: var(--ink);
+            color: var(--page);
+            padding: 8px 10px;
+            text-align: center;
+            border-right: 1px solid #444;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .tt thead th:first-child { text-align: left; }
+        .tt thead th:last-child { border-right: none; }
+
+        .tt tbody tr { background: var(--page); }
+        .tt tbody tr:nth-child(even) { background: var(--page-alt); }
+
+        .tt tbody td {
+            padding: 8px 10px;
+            border-right: var(--border-thin);
+            border-bottom: var(--border-thin);
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .tt tbody td:first-child { text-align: left; border-right: var(--border-mid); }
+        .tt tbody td:last-child { border-right: none; }
+
+        /* Running time col */
+        .tt .col-rt {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            color: var(--ink-light);
+            background: var(--page-alt) !important;
+            border-right: var(--border-thick) !important;
+            width: 48px;
+            text-align: center;
+        }
+
+        .tt tbody tr:nth-child(even) .col-rt { background: #ddd !important; }
+
+        .tt .col-station {
+            font-weight: 700;
             font-size: 14px;
-            line-height: 1.8;
-            white-space: pre-wrap;
-            border: 2px solid var(--text-secondary);
-            font-family: 'Space Mono', monospace;
+            letter-spacing: 0.5px;
+            min-width: 110px;
         }
 
-        dialog#shiftReportDialog menu {
+        /* Time cells: big hour, small seconds */
+        .time-display {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .time-hm {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .time-s {
+            font-size: 10px;
+            font-weight: 700;
+            margin-left: 1px;
+            color: var(--ink-mid);
+            vertical-align: super;
+        }
+
+        .time-null { color: var(--ink-light); font-family: 'Share Tech Mono', monospace; font-size: 14px; }
+
+        /* Row states */
+        .tt tbody tr.row-current {
+            background: var(--yellow-hi) !important;
+        }
+
+        .tt tbody tr.row-current td { font-weight: 700; }
+        .tt tbody tr.row-current .col-rt { background: #c8b800 !important; }
+
+        .tt tbody tr.row-done {
+            opacity: 0.45;
+        }
+
+        /* Pass stop */
+        .pass-badge {
+            display: inline-block;
+            background: var(--pass-bg);
+            color: var(--blue-early);
+            border: 1px solid var(--blue-early);
+            font-size: 9px;
+            font-weight: 900;
+            padding: 1px 5px;
+            letter-spacing: 1px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        /* Delta badges */
+        .delta {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border: 1px solid;
+            display: inline-block;
+            letter-spacing: 0;
+        }
+
+        .delta-early { color: var(--blue-early); border-color: var(--blue-early); background: #e8f0ff; }
+        .delta-late  { color: var(--red-late);  border-color: var(--red-late);  background: #ffe8e8; }
+        .delta-on    { color: var(--green-on);  border-color: var(--green-on);  background: #e8f4e8; }
+
+        /* Salmon/orange rows for significant stops (matches image) */
+        .tt tbody tr.row-salmon { background: #f5c49a !important; }
+        .tt tbody tr.row-salmon .col-rt { background: #e8a870 !important; }
+        .tt tbody tr.row-salmon.row-current { background: var(--yellow-hi) !important; }
+        .tt tbody tr.row-salmon.row-done { opacity: 0.45; }
+
+        /* Remarks col */
+        .col-remarks { font-size: 11px; color: var(--ink-light); min-width: 80px; }
+
+        /* Speed limit col */
+        .col-limit {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: var(--ink-light);
+            text-align: center;
+            width: 40px;
+        }
+
+        /* === DIALOG / MODAL === */
+        dialog#shiftReportDialog {
+            border: var(--border-thick);
+            background: var(--page);
+            color: var(--ink);
+            padding: 0;
+            max-width: 520px;
+            width: 90%;
+        }
+
+        dialog::backdrop { background: rgba(0,0,0,0.65); }
+
+        .dialog-header {
+            background: var(--ink);
+            color: var(--page);
+            padding: 12px 18px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .dialog-body {
+            padding: 20px 18px;
+        }
+
+        .dialog-body pre {
+            background: var(--page-alt);
+            border: var(--border-mid);
+            padding: 14px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            line-height: 1.9;
+            max-height: 340px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .dialog-footer {
+            padding: 12px 18px;
+            border-top: var(--border-mid);
             display: flex;
             justify-content: flex-end;
-            gap: 12px;
-            margin-top: 20px;
-            padding: 0;
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .route-selection {
-                flex-direction: column;
-                padding: 16px;
-                gap: 16px;
-            }
+        /* Focus mode */
+        #timetableInterface.focus-mode .tt-table-wrap { display: none; }
+        #timetableInterface.focus-mode .next-stop-bar { padding: 16px 0; }
+        #timetableInterface.focus-mode .ns-name { font-size: 30px; }
+        #timetableInterface.focus-mode .ns-time-val { font-size: 26px; }
+        #timetableInterface.focus-mode .clock-val { font-size: 32px; }
+        #timetableInterface.focus-mode .action-btn { padding: 18px 8px; font-size: 14px; }
 
-            .route-list-panel {
-                flex: 0 0 auto;
-                height: 50vh;
-                padding: 20px;
-            }
+        /* High contrast */
+        [data-hc="1"] {
+            --page: #000;
+            --page-alt: #111;
+            --ink: #fff;
+            --ink-mid: #ddd;
+            --ink-light: #aaa;
+            --rule: #fff;
+        }
 
-            .route-list-panel h2 {
-                font-size: 24px;
-            }
+        [data-hc="1"] .tt-big-num { color: #ff4444; }
+        [data-hc="1"] .clock-val { color: #ffff00; }
 
-            .theme-toggle {
-                top: 16px;
-                right: 16px;
-                width: 48px;
-                height: 48px;
-                font-size: 20px;
-            }
+        /* Utility buttons top-right */
+        .util-bar {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            display: flex;
+            gap: 4px;
+            z-index: 999;
+        }
 
-            .focus-toggle {
-                top: 16px;
-                right: 72px;
-                width: 48px;
-                height: 48px;
-                font-size: 20px;
-            }
+        .util-btn {
+            width: 44px;
+            height: 44px;
+            background: var(--ink);
+            color: var(--page);
+            border: 2px solid var(--ink);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 2px 2px 0 #222;
+        }
 
-            .timetable-interface {
-                flex-direction: column;
-                height: 100vh;
-                padding: 0;
-                gap: 0;
-                overflow: hidden;
-            }
+        .util-btn:hover { background: var(--salmon-header); border-color: var(--salmon-header); color: #fff; }
+        .util-btn#focusToggle { display: none; }
+        #timetableInterface.active ~ .util-bar .util-btn#focusToggle { display: flex; }
 
-            .timetable-panel {
-                flex: 1;
-                order: 1;
-                padding: 16px;
-                overflow-x: auto;
-                overflow-y: auto;
-                border-radius: 0;
-                border: none;
-                border-bottom: 3px solid var(--coral);
-            }
-
-            .accessories-panel {
-                flex: 0 0 auto;
-                order: 2;
-                gap: 12px;
-                padding: 16px;
-                background: var(--bg-card);
-                border-top: 3px solid var(--coral);
-                box-shadow: 0 -4px 16px rgba(0,0,0,0.12);
-                overflow-y: auto;
-                max-height: none;
-            }
-
-            .start-driving-btn {
-                font-size: 18px;
-                padding: 16px;
-                margin-bottom: 12px;
-            }
-
-            .clock-container {
-                display: flex;
-                gap: 12px;
-            }
-
-            .accessories-panel > .clock-card:first-child,
-            .accessories-panel > .clock-card:nth-child(2) {
-                flex: 1;
-                padding: 12px;
-            }
-
-            .clock-card h3 {
-                font-size: 9px;
-                margin-bottom: 4px;
-            }
-
-            .clock-time {
-                font-size: 20px;
-            }
-
-            .clock-large {
-                font-size: 22px;
-            }
-
-            .next-stop-card {
-                padding: 16px;
-            }
-
-            .next-stop-card h3 {
-                font-size: 11px;
-                margin-bottom: 8px;
-            }
-
-            .next-stop-info {
-                font-size: 18px;
-                margin-bottom: 12px;
-            }
-
-            .next-stop-times {
-                gap: 8px;
-                margin-bottom: 12px;
-            }
-
-            .time-block {
-                padding: 10px;
-            }
-
-            .time-label {
-                font-size: 9px;
-            }
-
-            .time-value {
-                font-size: 14px;
-            }
-
-            .control-buttons {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-
-            .control-buttons .btn-arrived,
-            .control-buttons .btn-departed {
-                padding: 16px 12px;
-                font-size: 13px;
-            }
-
-            .control-buttons .btn-previous {
-                grid-column: 1 / -1;
-                padding: 14px;
-                font-size: 12px;
-            }
-
-            .control-btn {
-                padding: 12px;
-                font-size: 12px;
-            }
-
-            .btn-end-shift,
-            .btn-turnaround {
-                display: block;
-                width: 100%;
-                padding: 14px;
-                font-size: 12px;
-                grid-column: 1 / -1;
-            }
-
-            th:nth-child(4), 
-            td:nth-child(4),
-            th:nth-child(5), 
-            td:nth-child(5) {
-                display: none;
-            }
-
-            th:nth-child(1), td:nth-child(1) { width: 35%; }
-            th:nth-child(2), td:nth-child(2) { width: 22%; }
-            th:nth-child(3), td:nth-child(3) { width: 22%; }
-            th:nth-child(6), td:nth-child(6) { width: 21%; }
-
-            .timetable-panel table {
-                width: 100%;
-                display: table;
-                min-width: 100%;
-            }
-
-            th {
-                padding: 12px 10px;
-                font-size: 11px;
-            }
-
-            td {
-                padding: 14px 10px;
-                font-size: 13px;
-            }
-
-            td:nth-child(1) {
-                font-size: 14px;
-                font-weight: 700;
-            }
-
-            /* Focus Mode Mobile */
-            .timetable-interface.focus-mode .accessories-panel {
-                padding: 20px;
-                gap: 16px;
-            }
-
-            .timetable-interface.focus-mode .clock-card:nth-child(2) {
-                padding: 24px;
-            }
-
-            .timetable-interface.focus-mode .clock-card h3 {
-                font-size: 12px;
-                margin-bottom: 8px;
-            }
-
-            .timetable-interface.focus-mode .clock-time {
-                font-size: 42px;
-            }
-
-            .timetable-interface.focus-mode .next-stop-card {
-                padding: 24px;
-            }
-
-            .timetable-interface.focus-mode .next-stop-card h3 {
-                font-size: 13px;
-            }
-
-            .timetable-interface.focus-mode .next-stop-info {
-                font-size: 28px;
-            }
-
-            .timetable-interface.focus-mode .next-stop-times {
-                gap: 12px;
-                margin-bottom: 16px;
-            }
-
-            .timetable-interface.focus-mode .time-block {
-                padding: 16px;
-            }
-
-            .timetable-interface.focus-mode .time-label {
-                font-size: 10px;
-            }
-
-            .timetable-interface.focus-mode .time-value {
-                font-size: 20px;
-            }
-
-            .timetable-interface.focus-mode .control-btn {
-                padding: 18px;
-                font-size: 14px;
-            }
+        /* Responsive */
+        @media (max-width: 640px) {
+            body { padding: 0; }
+            .paper { box-shadow: none; border: none; }
+            .action-bar { grid-template-columns: repeat(3, 1fr); }
+            .action-btn.btn-end,
+            .action-btn.btn-turn { grid-column: span 1; }
+            .tt thead th:nth-child(4),
+            .tt tbody td:nth-child(4),
+            .tt thead th:nth-child(5),
+            .tt tbody td:nth-child(5) { display: none; }
         }
     </style>
 </head>
-<body>
-    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle High Contrast Mode">◐</button>
-    <button class="focus-toggle" onclick="toggleFocusMode()" title="Toggle Focus Mode">⊙</button>
+<body data-hc="0">
 
-    <!-- Route Selection Interface -->
-    <div class="route-selection" id="routeSelection">
-        <div class="route-list-panel">
-            <h2>Select Route</h2>
-            <input type="text" class="search-bar" id="searchBar" placeholder="Search routes...">
-            <div class="route-buttons" id="routeButtons"></div>
+<div class="util-bar">
+    <button class="util-btn" id="focusToggle" onclick="toggleFocus()" title="Focus mode">⊙</button>
+    <button class="util-btn" onclick="toggleHC()" title="High contrast">◐</button>
+</div>
+
+<!-- ===================== ROUTE SELECTION ===================== -->
+<div class="paper" id="routeSelection">
+    <div class="sheet-header">
+        <span class="sheet-header-left">DRIVER'S TIMETABLE SYSTEM</span>
+        <span class="sheet-header-right">SELECT ROUTE</span>
+    </div>
+
+    <div class="route-title-row">
+        <label>路線 / ROUTE</label>
+        <input type="text" class="search-input" id="searchBar" placeholder="Search routes...">
+    </div>
+
+    <div class="route-grid" id="routeButtons"></div>
+
+    <div class="route-confirm-row">
+        <span class="selected-label" id="selectedLabel">No route selected</span>
+        <button class="btn-confirm" id="confirmBtn" disabled>Confirm →</button>
+    </div>
+</div>
+
+<!-- ===================== TIMETABLE ===================== -->
+<div class="paper" id="timetableInterface">
+
+    <!-- Header: route info -->
+    <div class="tt-header">
+        <div class="tt-header-cell" style="font-size:10px; color:var(--ink-light); min-width:90px;">
+            <div style="font-size:9px;letter-spacing:1px;margin-bottom:2px;">施行日 / DATE</div>
+            <div id="ttDate" style="font-family:'Share Tech Mono',monospace;font-size:13px;font-weight:700;"></div>
         </div>
-        <div class="map-panel">
-            <div class="map-placeholder" id="mapPlaceholder">
-                Select a route to view map
-            </div>
-            <button class="confirm-btn" id="confirmBtn" disabled>Confirm Route</button>
+        <div class="tt-header-cell tt-route-name" id="ttRouteName">---</div>
+        <div class="tt-big-num" id="ttLineNum">—</div>
+        <div class="tt-header-cell" style="text-align:center;">
+            <div style="font-size:9px;letter-spacing:1px;margin-bottom:2px;color:var(--ink-light);">TRAIN</div>
+            <div id="ttTrainNum" style="font-family:'Share Tech Mono',monospace;font-size:20px;font-weight:900;">---</div>
+        </div>
+        <div class="tt-header-cell" style="font-size:10px; color:var(--ink-light); text-align:right; min-width:90px;">
+            静岡運輸区<br><span style="font-size:9px;">Shizuoka Depot</span>
         </div>
     </div>
 
-    <!-- Timetable Interface -->
-    <div class="timetable-interface" id="timetableInterface">
-        <div class="timetable-panel">
-            <button class="start-driving-btn" id="startDrivingBtn">Start Driving</button>
-            <div class="table-container">
-                <table id="timetableTable">
-                    <thead>
-                        <tr>
-                            <th>Station</th>
-                            <th>Arrival Time</th>
-                            <th>Departure Time</th>
-                            <th>Δ Arrival</th>
-                            <th>Δ Departure</th>
-                            <th>Remarks</th>
-                        </tr>
-                    </thead>
-                    <tbody id="timetableBody"></tbody>
-                </table>
-            </div>
+    <!-- Clock bar -->
+    <div class="clock-bar">
+        <div class="clock-cell">
+            <span class="clock-label">Local Time / 現地時刻</span>
+            <span class="clock-val" id="localClock">00:00:00</span>
         </div>
-        <div class="accessories-panel">
-            <div class="clock-card">
-                <h3>Local Time</h3>
-                <div class="clock-time clock-large" id="localClock">00:00:00</div>
-            </div>
-            <div class="clock-card">
-                <h3>Japan Standard Time</h3>
-                <div class="clock-time" id="jstClock">00:00:00</div>
-            </div>
-            <div class="next-stop-card">
-                <h3>Next Stop</h3>
-                <div class="next-stop-info" id="nextStopName">---</div>
-                <div class="next-stop-times">
-                    <div class="time-block">
-                        <div class="time-label">Arrival</div>
-                        <div class="time-value" id="nextStopArrival">--:--:--</div>
-                    </div>
-                    <div class="time-block">
-                        <div class="time-label">Departure</div>
-                        <div class="time-value" id="nextStopDeparture">--:--:--</div>
-                    </div>
-                </div>
-                <div class="control-buttons">
-                    <button class="control-btn btn-arrived" id="arrivedBtn" disabled>Arrived</button>
-                    <button class="control-btn btn-departed" id="departedBtn" disabled>Departed</button>
-                    <button class="control-btn btn-previous" id="previousBtn" disabled>Previous Stop</button>
-                    <button class="control-btn btn-end-shift" id="endShiftBtn">End Shift</button>
-                    <button class="control-btn btn-turnaround" id="turnaroundBtn" disabled>Turnaround</button>
-                </div>
-            </div>
+        <div class="clock-cell">
+            <span class="clock-label">JST / 日本標準時</span>
+            <span class="clock-val clock-val-sm" id="jstClock">00:00:00</span>
+        </div>
+        <div class="clock-cell" style="min-width:110px;">
+            <span class="clock-label">Status</span>
+            <span class="clock-val clock-val-sm" id="statusLabel" style="color:#aaa;">STANDBY</span>
         </div>
     </div>
 
-    <!-- End-of-shift dialog -->
-    <dialog id="shiftReportDialog">
-        <form method="dialog" style="display:flex; flex-direction:column; gap:16px;">
-            <h2>End of Shift Report</h2>
-            <pre id="shiftReportContent"></pre>
-            <menu style="display:flex; justify-content:flex-end; gap:12px;">
-                <button id="closeReportBtn" class="control-btn btn-arrived">Close</button>
-            </menu>
-        </form>
-    </dialog>
+    <!-- Start driving -->
+    <div class="start-row">
+        <button class="btn-start" id="startDrivingBtn">▶ START DRIVING / 運転開始</button>
+    </div>
 
-    <script defer>
-    let ROUTES = {};
-    let selectedRoute = null;
-    let selectedRouteData = null;
-    let timetableData = [];
-    let currentStopIndex = 0;
-    let isDriving = false;
-    let isFocusMode = false;
+    <!-- Next stop panel -->
+    <div class="next-stop-bar">
+        <div class="ns-station">
+            <span class="ns-label">次停車場 / NEXT STOP</span>
+            <span class="ns-name" id="nextStopName">---</span>
+        </div>
+        <div class="ns-time-cell">
+            <span class="ns-label">着 / ARR</span>
+            <span class="ns-time-val" id="nextStopArrival">--:--</span>
+        </div>
+        <div class="ns-time-cell">
+            <span class="ns-label">発 / DEP</span>
+            <span class="ns-time-val" id="nextStopDeparture">--:--</span>
+        </div>
+    </div>
 
-    async function loadRoutes() {
-        try {
-            const response = await fetch('routes.json');
-            if (!response.ok) {
-                throw new Error('Failed to load routes');
+    <!-- Action buttons -->
+    <div class="action-bar">
+        <button class="action-btn btn-arrived" id="arrivedBtn" disabled>✔ Arrived<br><span style="font-size:10px;opacity:0.7;">着 CHAKU</span></button>
+        <button class="action-btn btn-departed" id="departedBtn" disabled>▶ Departed<br><span style="font-size:10px;opacity:0.7;">発 HATSU</span></button>
+        <button class="action-btn btn-previous" id="previousBtn" disabled>◀ Previous<br><span style="font-size:10px;opacity:0.7;">前停車場</span></button>
+        <button class="action-btn btn-end" id="endShiftBtn">■ End Shift<br><span style="font-size:10px;opacity:0.7;">終了 OWARI</span></button>
+        <button class="action-btn btn-turn" id="turnaroundBtn" disabled>⇄ Turnaround<br><span style="font-size:10px;opacity:0.7;">折返し</span></button>
+    </div>
+
+    <!-- Timetable -->
+    <div class="tt-table-wrap">
+        <table class="tt" id="timetableTable">
+            <thead>
+                <tr>
+                    <th style="width:48px;border-right:2.5px solid #555;">運転時<br><span style="font-size:9px;">RT</span></th>
+                    <th class="col-station" style="text-align:left;min-width:110px;">停車場名<br><span style="font-size:9px;">STATION</span></th>
+                    <th>着<br><span style="font-size:9px;">ARR</span></th>
+                    <th>発(通)<br><span style="font-size:9px;">DEP</span></th>
+                    <th>Δ着<br><span style="font-size:9px;">ΔA</span></th>
+                    <th>Δ発<br><span style="font-size:9px;">ΔD</span></th>
+                    <th style="min-width:60px;">制限速<br><span style="font-size:9px;">LIMIT</span></th>
+                    <th style="min-width:80px;text-align:left;">記事<br><span style="font-size:9px;">REMARKS</span></th>
+                </tr>
+            </thead>
+            <tbody id="timetableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- End-of-shift dialog -->
+<dialog id="shiftReportDialog">
+    <div class="dialog-header">終了報告 / END OF SHIFT REPORT</div>
+    <div class="dialog-body">
+        <pre id="shiftReportContent"></pre>
+    </div>
+    <div class="dialog-footer">
+        <button class="btn-confirm" id="closeReportBtn">Close & Reset</button>
+    </div>
+</dialog>
+
+<script>
+let ROUTES = {};
+let selectedRoute = null;
+let selectedRouteData = null;
+let timetableData = [];
+let currentStopIndex = 0;
+let isDriving = false;
+let isFocus = false;
+
+async function loadRoutes() {
+    try {
+        const r = await fetch('routes.json');
+        if (!r.ok) throw new Error();
+        ROUTES = await r.json();
+    } catch {
+        ROUTES = {
+            "1446M Atami→Shizuoka": {
+                stops: [
+                    { station: "静岡", runningTime: 0, dwellTime: 0, isPass: false, remarks: "出発" },
+                    { station: "東静岡", runningTime: 150, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "静岡貨物", runningTime: 90, dwellTime: 0, isPass: true, remarks: "" },
+                    { station: "草薙", runningTime: 90, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "清水", runningTime: 225, dwellTime: 60, isPass: false, remarks: "" },
+                    { station: "興津", runningTime: 255, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "由比", runningTime: 285, dwellTime: 0, isPass: false, remarks: "" },
+                    { station: "蒲原", runningTime: 180, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "新蒲原", runningTime: 135, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "富士川", runningTime: 165, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "富士", runningTime: 195, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "吉原", runningTime: 210, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "東田子浦", runningTime: 195, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "原", runningTime: 210, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "片浜", runningTime: 150, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "沼津", runningTime: 210, dwellTime: 90, isPass: false, remarks: "" },
+                    { station: "三島", runningTime: 270, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "函南", runningTime: 300, dwellTime: 30, isPass: false, remarks: "" },
+                    { station: "来宮", runningTime: 360, dwellTime: 0, isPass: true, remarks: "" },
+                    { station: "熱海", runningTime: 165, dwellTime: 0, isPass: false, remarks: "中1" }
+                ],
+                turnaroundTime: 300
             }
-            ROUTES = await response.json();
-            initRoutes();
-        } catch (error) {
-            console.error('Error loading routes:', error);
-            alert('Failed to load routes. Please refresh the page.');
-        }
+        };
     }
+    initRoutes();
+}
 
-    function initRoutes() {
-        const container = document.getElementById('routeButtons');
-        container.innerHTML = '';
-        
-        Object.keys(ROUTES).forEach(routeName => {
-            const btn = document.createElement('button');
-            btn.className = 'route-btn';
-            btn.textContent = routeName;
-            btn.onclick = () => selectRoute(routeName);
-            container.appendChild(btn);
-        });
-    }
+function initRoutes() {
+    const container = document.getElementById('routeButtons');
+    container.innerHTML = '';
+    Object.keys(ROUTES).forEach(name => {
+        const btn = document.createElement('button');
+        btn.className = 'route-cell-btn';
+        btn.textContent = name;
+        btn.onclick = () => selectRoute(name, btn);
+        container.appendChild(btn);
+    });
+}
 
-    function selectRoute(routeName) {
-        selectedRoute = routeName;
-        selectedRouteData = ROUTES[routeName];
-        document.querySelectorAll('.route-btn').forEach(btn => {
-            btn.classList.toggle('selected', btn.textContent === routeName);
-        });
-        document.getElementById('mapPlaceholder').textContent = `Map: ${routeName}`;
-        document.getElementById('confirmBtn').disabled = false;
-    }
+function selectRoute(name, btn) {
+    selectedRoute = name;
+    selectedRouteData = ROUTES[name];
+    document.querySelectorAll('.route-cell-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('selectedLabel').textContent = '選択: ' + name;
+    document.getElementById('confirmBtn').disabled = false;
+}
 
-    document.getElementById('confirmBtn').onclick = () => {
-        if (selectedRoute) {
-            document.getElementById('routeSelection').style.display = 'none';
-            document.getElementById('timetableInterface').classList.add('active');
-        }
-    };
+document.getElementById('confirmBtn').onclick = () => {
+    if (!selectedRoute) return;
+    document.getElementById('routeSelection').style.display = 'none';
+    const tti = document.getElementById('timetableInterface');
+    tti.classList.add('active');
+    document.getElementById('ttRouteName').textContent = selectedRoute;
+    document.getElementById('ttDate').textContent = new Date().toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit' }).replace(/\//g,'.');
+    document.getElementById('ttLineNum').textContent = selectedRouteData.stops ? selectedRouteData.stops.length : '—';
+    document.getElementById('ttTrainNum').textContent = selectedRouteData.trainNumber || '1446M';
+};
 
-    document.getElementById('startDrivingBtn').onclick = () => {
-        if (isDriving) return;
-        isDriving = true;
-        const now = new Date();
-        generateTimetable(now);
-        document.getElementById('startDrivingBtn').textContent = 'Driving...';
-        document.getElementById('startDrivingBtn').style.background = 'var(--text-secondary)';
-        document.getElementById('startDrivingBtn').style.borderColor = 'var(--text-secondary)';
-        document.getElementById('startDrivingBtn').style.color = 'var(--bg-primary)';
-        updateNextStop();
-    };
+document.getElementById('startDrivingBtn').onclick = () => {
+    if (isDriving) return;
+    isDriving = true;
+    const btn = document.getElementById('startDrivingBtn');
+    btn.textContent = '● DRIVING / 運転中';
+    btn.classList.add('driving');
+    document.getElementById('statusLabel').textContent = 'DRIVING';
+    document.getElementById('statusLabel').style.color = '#f5e840';
+    generateTimetable(new Date());
+    updateNextStop();
+};
 
-    function generateTimetable(startTime) {
-        const stops = selectedRouteData.stops;
-        timetableData = [];
-        let cumulativeTime = 0;
-
-        stops.forEach((stop, i) => {
-            cumulativeTime += stop.runningTime;
-            const arrivalTime = new Date(startTime.getTime() + cumulativeTime * 1000);
-            
-            let departureTime = null;
-            if (stop.isPass) {
-                departureTime = new Date(arrivalTime);
-            } else if (i < stops.length - 1) {
-                const dwellTime = stop.dwellTime || 0;
-                departureTime = new Date(arrivalTime.getTime() + dwellTime * 1000);
-            }
-
-            timetableData.push({
-                station: stop.station,
-                isPass: stop.isPass || false,
-                scheduledArrival: roundTo15Seconds(arrivalTime),
-                scheduledDeparture: departureTime ? roundTo15Seconds(departureTime) : null,
-                actualArrival: null,
-                actualDeparture: null,
-                remarks: stop.remarks,
-                dwellTime: stop.dwellTime || 0
-            });
-        });
-
-        renderTimetable();
-    }
-
-    function roundTo15Seconds(date) {
-        const seconds = date.getSeconds();
-        const milliseconds = date.getMilliseconds();
-        
-        const remainder = seconds % 15;
-        
-        if (remainder === 0 && milliseconds === 0) {
-            return new Date(date);
-        }
-        
-        const secondsToAdd = 15 - remainder;
-        const newDate = new Date(date);
-        newDate.setSeconds(seconds + secondsToAdd, 0);
-        
-        return newDate;
-    }
-
-    function renderTimetable() {
-        const tbody = document.getElementById('timetableBody');
-        tbody.innerHTML = '';
-
-        timetableData.forEach((stop, i) => {
-            const row = tbody.insertRow();
-            if (i === currentStopIndex) row.classList.add('current-stop');
-            if (i < currentStopIndex) row.classList.add('completed');
-
-            const stationCell = row.insertCell(0);
-            if (stop.isPass) {
-                stationCell.innerHTML = `<span class="pass-label">PASS</span>${stop.station}`;
-            } else {
-                stationCell.textContent = stop.station;
-            }
-            
-            const arrivalCell = row.insertCell(1);
-            if (i === 0) {
-                arrivalCell.textContent = '---';
-            } else if (stop.isPass) {
-                arrivalCell.textContent = '---';
-            } else {
-                arrivalCell.textContent = formatTime(stop.scheduledArrival);
-            }
-            
-            const departureCell = row.insertCell(2);
-            if (i === timetableData.length - 1) {
-                departureCell.textContent = '---';
-            } else {
-                departureCell.textContent = stop.scheduledDeparture ? formatTime(stop.scheduledDeparture) : '---';
-            }
-            
-            const arrDelta = row.insertCell(3);
-            const depDelta = row.insertCell(4);
-            
-            if (stop.actualArrival && !stop.isPass && i !== 0) {
-                const delta = Math.round((stop.actualArrival - stop.scheduledArrival) / 1000);
-                arrDelta.innerHTML = `<span class="delta ${delta < 0 ? 'early' : delta > 0 ? 'late' : 'ontime'}">${delta > 0 ? '+' : ''}${delta}s</span>`;
-            }
-            
-            if (stop.actualDeparture && stop.scheduledDeparture && i !== timetableData.length - 1) {
-                const delta = Math.round((stop.actualDeparture - stop.scheduledDeparture) / 1000);
-                depDelta.innerHTML = `<span class="delta ${delta < 0 ? 'early' : delta > 0 ? 'late' : 'ontime'}">${delta > 0 ? '+' : ''}${delta}s</span>`;
-            }
-            
-            row.insertCell(5).textContent = stop.remarks;
-        });
-    }
-
-    function updateNextStop() {
-        if (currentStopIndex >= timetableData.length) {
-            document.getElementById('nextStopName').textContent = 'Journey Complete';
-            document.getElementById('arrivedBtn').disabled = true;
-            document.getElementById('departedBtn').disabled = true;
-            document.getElementById('turnaroundBtn').disabled = false;
-            return;
-        }
-
-        const stop = timetableData[currentStopIndex];
-        
-        const nextStopNameEl = document.getElementById('nextStopName');
+function generateTimetable(startTime) {
+    const stops = selectedRouteData.stops;
+    timetableData = [];
+    let cumTime = 0;
+    stops.forEach((stop, i) => {
+        cumTime += stop.runningTime;
+        const arr = new Date(startTime.getTime() + cumTime * 1000);
+        let dep = null;
         if (stop.isPass) {
-            nextStopNameEl.innerHTML = `<span class="pass-label">PASS</span>${stop.station}`;
-        } else {
-            nextStopNameEl.textContent = stop.station;
+            dep = new Date(arr);
+        } else if (i < stops.length - 1) {
+            dep = new Date(arr.getTime() + (stop.dwellTime || 0) * 1000);
         }
-        
+        timetableData.push({
+            station: stop.station,
+            isPass: stop.isPass || false,
+            runningTime: stop.runningTime,
+            scheduledArrival: roundTo15(arr),
+            scheduledDeparture: dep ? roundTo15(dep) : null,
+            actualArrival: null,
+            actualDeparture: null,
+            remarks: stop.remarks || '',
+            speedLimit: stop.speedLimit || null
+        });
+    });
+    renderTable();
+}
+
+function roundTo15(date) {
+    const s = date.getSeconds(), ms = date.getMilliseconds();
+    const rem = s % 15;
+    if (rem === 0 && ms === 0) return new Date(date);
+    const d = new Date(date);
+    d.setSeconds(s + (15 - rem), 0);
+    return d;
+}
+
+function renderTable() {
+    const tbody = document.getElementById('timetableBody');
+    tbody.innerHTML = '';
+    timetableData.forEach((stop, i) => {
+        const tr = document.createElement('tr');
+        if (i === currentStopIndex) tr.classList.add('row-current');
+        if (i < currentStopIndex) tr.classList.add('row-done');
+        if (!stop.isPass && (i % 4 < 2)) tr.classList.add('row-salmon');
+
+        // Running time
+        const rtCell = document.createElement('td');
+        rtCell.className = 'col-rt';
+        if (stop.runningTime > 0) {
+            const m = Math.floor(stop.runningTime / 60);
+            const s = stop.runningTime % 60;
+            rtCell.textContent = m + (s ? '\''+String(s).padStart(2,'0') : '\'');
+        } else { rtCell.textContent = '—'; }
+        tr.appendChild(rtCell);
+
+        // Station
+        const stCell = document.createElement('td');
+        stCell.className = 'col-station';
         if (stop.isPass) {
-            document.getElementById('nextStopArrival').textContent = '---';
-            document.getElementById('nextStopDeparture').textContent = formatTime(stop.scheduledDeparture);
-        } else {
-            document.getElementById('nextStopArrival').textContent = formatTime(stop.scheduledArrival);
-            document.getElementById('nextStopDeparture').textContent = stop.scheduledDeparture ? formatTime(stop.scheduledDeparture) : '---';
+            const badge = document.createElement('span');
+            badge.className = 'pass-badge';
+            badge.textContent = '通';
+            stCell.appendChild(badge);
         }
-        
-        if (stop.isPass) {
-            document.getElementById('arrivedBtn').disabled = true;
-            document.getElementById('departedBtn').disabled = false;
-        } else {
-            document.getElementById('arrivedBtn').disabled = false;
-            document.getElementById('departedBtn').disabled = stop.actualArrival === null;
-        }
-        
-        document.getElementById('previousBtn').disabled = currentStopIndex === 0;
-    }
+        stCell.appendChild(document.createTextNode(stop.station));
+        tr.appendChild(stCell);
 
-    document.getElementById('arrivedBtn').onclick = () => {
-        if (currentStopIndex < timetableData.length) {
-            const stop = timetableData[currentStopIndex];
-            
-            if (stop.isPass) return;
-            
-            timetableData[currentStopIndex].actualArrival = new Date();
-            document.getElementById('departedBtn').disabled = false;
-            renderTimetable();
+        // Arrival
+        const arrCell = document.createElement('td');
+        if (i === 0 || stop.isPass) {
+            arrCell.innerHTML = '<span class="time-null">—</span>';
+        } else if (stop.scheduledArrival) {
+            arrCell.innerHTML = fmtTimeSplit(stop.scheduledArrival);
         }
-    };
+        tr.appendChild(arrCell);
 
-    document.getElementById('departedBtn').onclick = () => {
-        if (currentStopIndex < timetableData.length) {
-            const stop = timetableData[currentStopIndex];
-            
-            if (stop.isPass) {
-                timetableData[currentStopIndex].actualDeparture = new Date();
-                timetableData[currentStopIndex].actualArrival = new Date();
-            } else if (timetableData[currentStopIndex].actualArrival) {
-                timetableData[currentStopIndex].actualDeparture = new Date();
-            } else {
-                return;
-            }
-            
-            currentStopIndex++;
-            renderTimetable();
-            updateNextStop();
+        // Departure
+        const depCell = document.createElement('td');
+        if (i === timetableData.length - 1) {
+            depCell.innerHTML = '<span class="time-null">—</span>';
+        } else if (stop.scheduledDeparture) {
+            depCell.innerHTML = fmtTimeSplit(stop.scheduledDeparture);
         }
-    };
+        tr.appendChild(depCell);
 
-    document.getElementById('previousBtn').onclick = () => {
-        if (currentStopIndex > 0) {
-            currentStopIndex--;
-            timetableData[currentStopIndex].actualDeparture = null;
-            if (!timetableData[currentStopIndex].isPass) {
-                timetableData[currentStopIndex].actualArrival = null;
-            }
-            document.getElementById('departedBtn').disabled = timetableData[currentStopIndex].isPass ? false : true;
-            renderTimetable();
-            updateNextStop();
+        // Δ Arrival
+        const daCell = document.createElement('td');
+        if (stop.actualArrival && !stop.isPass && i !== 0) {
+            const d = Math.round((stop.actualArrival - stop.scheduledArrival) / 1000);
+            daCell.innerHTML = deltaSpan(d);
         }
-    };
+        tr.appendChild(daCell);
 
-    document.getElementById('turnaroundBtn').onclick = () => {
-        if (!selectedRouteData) return;
-        
-        const turnaroundTime = selectedRouteData.turnaroundTime || 300;
-        const turnaroundMinutes = Math.floor(turnaroundTime / 60);
-        const turnaroundSeconds = turnaroundTime % 60;
-        const timeString = turnaroundSeconds > 0 
-            ? `${turnaroundMinutes} minutes ${turnaroundSeconds} seconds`
-            : `${turnaroundMinutes} minutes`;
-        
-        const message = `Turnaround will begin in ${timeString}. Ready?`;
-        
-        if (!confirm(message)) return;
-        
+        // Δ Departure
+        const ddCell = document.createElement('td');
+        if (stop.actualDeparture && stop.scheduledDeparture && i !== timetableData.length - 1) {
+            const d = Math.round((stop.actualDeparture - stop.scheduledDeparture) / 1000);
+            ddCell.innerHTML = deltaSpan(d);
+        }
+        tr.appendChild(ddCell);
+
+        // Speed limit
+        const slCell = document.createElement('td');
+        slCell.className = 'col-limit';
+        slCell.textContent = stop.speedLimit || '';
+        tr.appendChild(slCell);
+
+        // Remarks
+        const rkCell = document.createElement('td');
+        rkCell.className = 'col-remarks';
+        rkCell.textContent = stop.remarks || '';
+        tr.appendChild(rkCell);
+
+        tbody.appendChild(tr);
+    });
+
+    // Scroll current into view
+    const curRow = tbody.querySelector('.row-current');
+    if (curRow) curRow.scrollIntoView({ block: 'center', behavior: 'smooth' });
+}
+
+function fmtTimeSplit(date) {
+    if (!date) return '<span class="time-null">—</span>';
+    const h = String(date.getHours()).padStart(2,'0');
+    const m = String(date.getMinutes()).padStart(2,'0');
+    const s = date.getSeconds();
+    const sStr = s ? String(s).padStart(2,'0') : '';
+    return `<span class="time-display"><span class="time-hm">${h}.${m}</span>${sStr ? `<span class="time-s">${sStr}</span>` : ''}</span>`;
+}
+
+function deltaSpan(d) {
+    const cls = d < 0 ? 'delta-early' : d > 0 ? 'delta-late' : 'delta-on';
+    const sign = d > 0 ? '+' : '';
+    return `<span class="delta ${cls}">${sign}${d}s</span>`;
+}
+
+function updateNextStop() {
+    if (currentStopIndex >= timetableData.length) {
+        document.getElementById('nextStopName').textContent = '完了 Journey Complete';
         document.getElementById('arrivedBtn').disabled = true;
         document.getElementById('departedBtn').disabled = true;
-        document.getElementById('previousBtn').disabled = true;
-        document.getElementById('turnaroundBtn').disabled = true;
-        document.getElementById('nextStopName').textContent = `Turnaround in progress...`;
-        document.getElementById('nextStopArrival').textContent = '--:--:--';
-        document.getElementById('nextStopDeparture').textContent = '--:--:--';
-        
-        setTimeout(() => {
-            const reversedStops = [...selectedRouteData.stops].reverse();
-            selectedRouteData.stops = reversedStops;
-            currentStopIndex = 0;
-            isDriving = true;
-            
-            generateTimetable(new Date());
-            renderTimetable();
-            updateNextStop();
-            
-            alert('Turnaround complete! Starting return journey.');
-        }, turnaroundTime * 1000);
-    };
-
-    function formatTime(date) {
-        if (!date) return '---';
-        return date.toLocaleTimeString('en-US', { hour12: false });
+        document.getElementById('turnaroundBtn').disabled = false;
+        return;
     }
-
-    function updateClocks() {
-        const now = new Date();
-        document.getElementById('localClock').textContent = formatTime(now);
-        
-        const jst = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
-        document.getElementById('jstClock').textContent = formatTime(jst);
+    const stop = timetableData[currentStopIndex];
+    const nameEl = document.getElementById('nextStopName');
+    if (stop.isPass) {
+        nameEl.innerHTML = '<span class="pass-badge" style="font-size:11px;">通過</span>' + stop.station;
+    } else {
+        nameEl.textContent = stop.station;
     }
+    document.getElementById('nextStopArrival').innerHTML =
+        (stop.isPass || currentStopIndex === 0) ? '<span class="time-null">—</span>' : fmtTimeSplit(stop.scheduledArrival);
+    document.getElementById('nextStopDeparture').innerHTML =
+        (currentStopIndex === timetableData.length - 1) ? '<span class="time-null">—</span>' : fmtTimeSplit(stop.scheduledDeparture);
 
-    function toggleTheme() {
-        const html = document.documentElement;
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'high-contrast' ? 'light' : 'high-contrast';
-        html.setAttribute('data-theme', newTheme);
-        document.querySelector('.theme-toggle').textContent = newTheme === 'high-contrast' ? '◑' : '◐';
-    }
+    document.getElementById('arrivedBtn').disabled = stop.isPass || currentStopIndex === 0;
+    document.getElementById('departedBtn').disabled = stop.isPass ? false : !stop.actualArrival;
+    document.getElementById('previousBtn').disabled = currentStopIndex === 0;
+}
 
-    function toggleFocusMode() {
-        isFocusMode = !isFocusMode;
-        const timetableInterface = document.getElementById('timetableInterface');
-        
-        if (isFocusMode) {
-            timetableInterface.classList.add('focus-mode');
-            document.querySelector('.focus-toggle').textContent = '⊕';
-        } else {
-            timetableInterface.classList.remove('focus-mode');
-            document.querySelector('.focus-toggle').textContent = '⊙';
-        }
-    }
+document.getElementById('arrivedBtn').onclick = () => {
+    if (currentStopIndex >= timetableData.length) return;
+    const stop = timetableData[currentStopIndex];
+    if (stop.isPass) return;
+    timetableData[currentStopIndex].actualArrival = new Date();
+    document.getElementById('departedBtn').disabled = false;
+    renderTable();
+};
 
-    document.getElementById('searchBar').oninput = (e) => {
-        const search = e.target.value.toLowerCase();
-        document.querySelectorAll('.route-btn').forEach(btn => {
-            btn.style.display = btn.textContent.toLowerCase().includes(search) ? 'block' : 'none';
-        });
-    };
+document.getElementById('departedBtn').onclick = () => {
+    if (currentStopIndex >= timetableData.length) return;
+    const stop = timetableData[currentStopIndex];
+    if (stop.isPass) {
+        timetableData[currentStopIndex].actualArrival = new Date();
+        timetableData[currentStopIndex].actualDeparture = new Date();
+    } else if (stop.actualArrival) {
+        timetableData[currentStopIndex].actualDeparture = new Date();
+    } else return;
+    currentStopIndex++;
+    renderTable();
+    updateNextStop();
+};
 
-    function resetShiftState() {
-        isDriving = false;
+document.getElementById('previousBtn').onclick = () => {
+    if (currentStopIndex <= 0) return;
+    currentStopIndex--;
+    timetableData[currentStopIndex].actualDeparture = null;
+    if (!timetableData[currentStopIndex].isPass) timetableData[currentStopIndex].actualArrival = null;
+    renderTable();
+    updateNextStop();
+};
+
+document.getElementById('turnaroundBtn').onclick = () => {
+    if (!selectedRouteData) return;
+    const t = selectedRouteData.turnaroundTime || 300;
+    const m = Math.floor(t / 60), s = t % 60;
+    const ts = s > 0 ? `${m}m ${s}s` : `${m}m`;
+    if (!confirm(`折返し / Turnaround: ${ts}. Ready to proceed?`)) return;
+
+    ['arrivedBtn','departedBtn','previousBtn','turnaroundBtn'].forEach(id => document.getElementById(id).disabled = true);
+    document.getElementById('nextStopName').textContent = '折返し中... Turnaround';
+    document.getElementById('nextStopArrival').textContent = '--:--';
+    document.getElementById('nextStopDeparture').textContent = '--:--';
+
+    setTimeout(() => {
+        selectedRouteData.stops = [...selectedRouteData.stops].reverse();
         currentStopIndex = 0;
-        timetableData = [];
-        isFocusMode = false;
+        isDriving = true;
+        generateTimetable(new Date());
+        updateNextStop();
+        alert('折返し完了 / Turnaround complete! Starting return journey.');
+    }, t * 1000);
+};
 
-        document.getElementById('timetableInterface').classList.remove('active', 'focus-mode');
-        document.getElementById('routeSelection').style.display = 'flex';
+document.getElementById('endShiftBtn').onclick = () => {
+    if (!isDriving) return;
+    if (!confirm('終了しますか？ / End your shift?')) return;
+    const lines = timetableData.map(s => {
+        const n = s.isPass ? `[通] ${s.station}` : s.station;
+        return `${n}\n  着: ${s.actualArrival && !s.isPass ? fmtTimeSimple(s.actualArrival) : '---'}\n  発: ${s.actualDeparture ? fmtTimeSimple(s.actualDeparture) : '---'}`;
+    }).join('\n\n');
+    document.getElementById('shiftReportContent').textContent = lines;
+    const dlg = document.getElementById('shiftReportDialog');
+    if (dlg.showModal) dlg.showModal(); else alert(lines);
+};
 
-        document.getElementById('startDrivingBtn').textContent = 'Start Driving';
-        document.getElementById('startDrivingBtn').style.background = 'var(--text-primary)';
-        document.getElementById('startDrivingBtn').style.borderColor = 'var(--text-primary)';
-        document.getElementById('startDrivingBtn').style.color = 'var(--bg-primary)';
-        document.getElementById('arrivedBtn').disabled = true;
-        document.getElementById('departedBtn').disabled = true;
-        document.getElementById('previousBtn').disabled = true;
-        document.getElementById('turnaroundBtn').disabled = true;
-        
-        loadRoutes();
-    }
+document.getElementById('closeReportBtn').onclick = () => {
+    document.getElementById('shiftReportDialog').close();
+    resetShift();
+};
 
-    document.getElementById('endShiftBtn').onclick = () => {
-        if (!isDriving) return;
+function fmtTimeSimple(date) {
+    return date ? date.toLocaleTimeString('en-US', { hour12: false }) : '---';
+}
 
-        if (!confirm('Are you sure you want to end your shift?')) return;
-
-        const reportLines = timetableData.map(stop => {
-            const stationName = stop.isPass ? `Pass ${stop.station}` : stop.station;
-            return `${stationName}
-    Arr: ${stop.actualArrival && !stop.isPass ? formatTime(stop.actualArrival) : '---'}
-    Dep: ${stop.actualDeparture ? formatTime(stop.actualDeparture) : '---'}`;
-        }).join('\n\n');
-
-        document.getElementById('shiftReportContent').textContent = reportLines;
-
-        const dialog = document.getElementById('shiftReportDialog');
-        if (typeof dialog.showModal === "function") {
-            dialog.showModal();
-        } else {
-            alert("Your browser does not support <dialog>. Report:\n\n" + reportLines);
-            resetShiftState();
-        }
-    };
-
-    document.getElementById('closeReportBtn').onclick = () => {
-        const dialog = document.getElementById('shiftReportDialog');
-        dialog.close();
-        resetShiftState();
-    };
-
+function resetShift() {
+    isDriving = false; currentStopIndex = 0; timetableData = []; isFocus = false;
+    document.getElementById('timetableInterface').classList.remove('active','focus-mode');
+    document.getElementById('routeSelection').style.display = '';
+    document.getElementById('startDrivingBtn').textContent = '▶ START DRIVING / 運転開始';
+    document.getElementById('startDrivingBtn').classList.remove('driving');
+    document.getElementById('statusLabel').textContent = 'STANDBY';
+    document.getElementById('statusLabel').style.color = '#aaa';
+    ['arrivedBtn','departedBtn','previousBtn','turnaroundBtn'].forEach(id => document.getElementById(id).disabled = true);
     loadRoutes();
-    setInterval(updateClocks, 100);
-    updateClocks();
-    </script>
+}
+
+document.getElementById('searchBar').oninput = e => {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll('.route-cell-btn').forEach(b => {
+        b.style.display = b.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+};
+
+function updateClocks() {
+    const now = new Date();
+    document.getElementById('localClock').textContent = fmtTimeSimple(now);
+    const jst = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
+    document.getElementById('jstClock').textContent = fmtTimeSimple(jst);
+}
+
+function toggleHC() {
+    const cur = document.body.getAttribute('data-hc');
+    document.body.setAttribute('data-hc', cur === '1' ? '0' : '1');
+    document.documentElement.setAttribute('data-hc', cur === '1' ? '0' : '1');
+}
+
+function toggleFocus() {
+    isFocus = !isFocus;
+    const tti = document.getElementById('timetableInterface');
+    tti.classList.toggle('focus-mode', isFocus);
+    document.getElementById('focusToggle').textContent = isFocus ? '⊕' : '⊙';
+}
+
+loadRoutes();
+setInterval(updateClocks, 500);
+updateClocks();
+</script>
 </body>
 </html>
